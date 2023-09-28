@@ -1,0 +1,8 @@
+<div class="container">
+    <h1>MOTUS</h1>
+    <div class="row" *ngFor="let word of this.gameService.words">
+        <div class="cell" *ngFor="let char of word;">
+            <p>{{char}}</p>
+        </div>
+    </div>
+</div>
