@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { GameService } from '../../services/game-service/game-service.service';
 import { LetterStyle } from '../../enumerations/letter-style.enum';
 import { Letter } from '../../models/letter.model';
+import { asyncTimeout } from '../../utils/async-timeout';
 
 @Component({
   selector: 'app-home',
@@ -10,15 +11,23 @@ import { Letter } from '../../models/letter.model';
   providers: [GameService]
 })
 export class HomeComponent {
-  constructor(public gameService: GameService) { }
+  private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
+  private canPlay: boolean = true;
+
+  public constructor(public gameService: GameService) { }
 
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
+  public async keyEvent(event: KeyboardEvent) {
+    if (!this.canPlay) {
+      return;
+    }
     if(this.isValidCharacter(event.key)) {
       this.gameService.addLetter(event.key);
       if (this.gameService.isLastColumn()) {
-        this.animateLetters();
+        this.canPlay = false;
+        await this.animateLetters();
         this.gameService.moveToNextRow();
+        this.canPlay = true;
       }
     }
     else if (event.key === 'Backspace') {
@@ -26,10 +35,12 @@ export class HomeComponent {
     } 
   }
 
-  private animateLetters() {
-    for (let i = 0; i < this.gameService.solutionWord.length; i++) {
-      let currentLetter: Letter = this.gameService.words[this.gameService.selectedRow].getLetterByIndex(i);
-      if (this.gameService.solutionWord[i] === currentLetter.value) {
+  private async animateLetters() {
+    const userWordLength: number = this.gameService.words[this.gameService.selectedRow].letters.length;
+
+    for (let letterIndex = 0; letterIndex < userWordLength; letterIndex++) {
+      let currentLetter: Letter = this.gameService.words[this.gameService.selectedRow].getLetterByIndex(letterIndex);
+      if (this.gameService.solutionWord[letterIndex] === currentLetter.value) {
         currentLetter.style = LetterStyle.CORRECT;
       }
       else if (this.gameService.solutionWord.includes(currentLetter.value)) {
@@ -38,6 +49,7 @@ export class HomeComponent {
       else {
         currentLetter.style = LetterStyle.INCORRECT;
       }
+      await asyncTimeout(HomeComponent.LETTER_ANIMATION_DURATION_IN_MS);
     }
   }
 
