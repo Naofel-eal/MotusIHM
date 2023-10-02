@@ -1,3 +1,4 @@
 export enum Message {
-    WIN = 'You won!'
+    WIN = 'You won!',
+    LOSE = 'You lost!'
 }

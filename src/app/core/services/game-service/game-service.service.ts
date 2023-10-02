@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { WordService } from '../world-service/word-service.service';
-import { Letter } from '../../models/letter.model';
-import { LetterStyle } from '../../enumerations/letter-style.enum';
 import { Word } from '../../models/word.model';
 import { Message } from '../../enumerations/message.enum';
 
@@ -13,6 +11,7 @@ export class GameService {
   public solutionWord: string = '';
   public selectedRow: number = 0;
   private selectedColumn: number = 0;
+  private testLimit: number = 0;
 
   constructor(private wordService: WordService) {
     this.init();
@@ -23,19 +22,20 @@ export class GameService {
     this.solutionWord = '';
     this.selectedRow = 0;
     this.selectedColumn = 0;
+    this.testLimit = 7;
 
     this.wordService.generateRandomWord().subscribe(response => {
-      const word: string = this.wordService.normalize(JSON.parse(response)[0].name);
-      this.solutionWord = word;
+      const word: string = JSON.parse(response)[0].name;
+      this.solutionWord = this.wordService.normalize(word);
 
-      console.log(this.solutionWord);
-      const wordLength: number = this.solutionWord.length;
-      this.addWord();
+      for(let i = 0; i < this.testLimit; i++) {
+        this.addWord();
+      }
     });
   }
 
   public addLetter(key: string) {
-    this.words[this.selectedRow].letters[this.selectedColumn].value = key;
+    this.words[this.selectedRow].letters[this.selectedColumn].value = key.toUpperCase();
     this.selectedColumn++;
   }
 
@@ -44,9 +44,13 @@ export class GameService {
       this.win();
     }
     else {
-      this.selectedRow++;
-      this.selectedColumn = 0;
-      this.addWord();
+      if (this.isLastRow()) {
+        this.lose()
+      }
+      else {
+        this.selectedRow++;
+        this.selectedColumn = 0;
+      }
     }
   }
 
@@ -64,6 +68,13 @@ export class GameService {
     }, 1)
   }
 
+  public lose() {
+    setTimeout(() => {
+      alert(Message.LOSE);
+      this.init();
+    }, 1)
+  }
+
   private hasWon(): boolean {
     return this.words[this.selectedRow].value === this.solutionWord;
   }
@@ -74,6 +85,10 @@ export class GameService {
 
   public isLastColumn(): boolean {
     return this.selectedColumn === this.solutionWord.length;
+  }
+
+  private isLastRow(): boolean {
+    return this.selectedRow === this.testLimit - 1;
   }
 
   private addWord() {

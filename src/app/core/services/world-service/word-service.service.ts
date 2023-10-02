@@ -17,6 +17,6 @@ export class WordService {
 
   public normalize(word: string): string {
     const res = word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return res.replace(/ç/g, "c");
+    return res.replace(/ç/g, "c").toUpperCase();
   }
 }
