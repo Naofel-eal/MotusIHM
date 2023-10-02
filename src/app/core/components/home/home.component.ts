@@ -32,7 +32,7 @@ export class HomeComponent {
       if (this.gameService.solutionWord[i] === currentLetter.value) {
         currentLetter.style = LetterStyle.CORRECT;
       }
-      else if (this.gameService.solutionWord.includes(this.gameService.words[this.gameService.selectedRow].getLetterByIndex(i).value)) {
+      else if (this.gameService.solutionWord.includes(currentLetter.value)) {
         currentLetter.style = LetterStyle.ALMOST;
       }
       else {

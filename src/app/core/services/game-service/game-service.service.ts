@@ -3,6 +3,7 @@ import { WordService } from '../world-service/word-service.service';
 import { Letter } from '../../models/letter.model';
 import { LetterStyle } from '../../enumerations/letter-style.enum';
 import { Word } from '../../models/word.model';
+import { Message } from '../../enumerations/message.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +59,7 @@ export class GameService {
 
   public win() {
     setTimeout(() => {
-      alert('You won!');
+      alert(Message.WIN);
       this.init();
     }, 1)
   }
