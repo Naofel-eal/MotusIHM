@@ -10,5 +10,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 100px;
+}
+
+p {
+    height: 100%;
+    width: 100%;
+    font-size: 80px;
+    text-align: center;
+}
+
+.correct {
+    background-color: green;
+}
+
+.incorrect {
+    background-color: red;
+}
+
+.almost {
+    background-color: yellow;
 }

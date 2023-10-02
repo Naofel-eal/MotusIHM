@@ -1,8 +1,11 @@
 <div class="container">
     <h1>MOTUS</h1>
     <div class="row" *ngFor="let word of this.gameService.words">
-        <div class="cell" *ngFor="let char of word;">
-            <p>{{char}}</p>
+        <div 
+            class="cell" 
+            *ngFor="let letter of word.letters; let index = index;" 
+            [ngClass]="letter.style">
+            <p>{{letter.value}}</p>
         </div>
     </div>
 </div>
