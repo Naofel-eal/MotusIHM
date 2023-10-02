@@ -10,7 +10,6 @@ import { Word } from '../../models/word.model';
 export class GameService {
   public words: Word[] = [];
   public solutionWord: string = '';
-  private tryLimit: number = 0;
   public selectedRow: number = 0;
   private selectedColumn: number = 0;
 
@@ -20,7 +19,6 @@ export class GameService {
 
   public init() {
     this.words = [];
-    this.tryLimit = 5;
     this.solutionWord = '';
     this.selectedRow = 0;
     this.selectedColumn = 0;
@@ -31,9 +29,7 @@ export class GameService {
 
       console.log(this.solutionWord);
       const wordLength: number = this.solutionWord.length;
-      for (let i = 0; i < this.tryLimit; i++) {
-        this.words.push(new Word(wordLength));
-      }
+      this.addWord();
     });
   }
 
@@ -43,14 +39,13 @@ export class GameService {
   }
 
   public moveToNextRow() {
-    console.log(this.words[this.selectedRow]);
-    this.checkForWin();
-    if (!this.isLastRow()) {
-      this.selectedRow++;
-      this.selectedColumn = 0;
+    if(this.hasWon()) {
+      this.win();
     }
     else {
-      this.checkForLose();
+      this.selectedRow++;
+      this.selectedColumn = 0;
+      this.addWord();
     }
   }
 
@@ -61,30 +56,15 @@ export class GameService {
     }
   }
 
-  public checkForWin() {
-    if(this.hasWon()) {
-      setTimeout(() => {
-        alert('You win!');
-        this.init();
-      }, 1)
-    }
-  }
-
-  public checkForLose() {
-    if (!this.hasWon()) {
-      setTimeout(() => {
-        alert('You lose!');
-        this.init();
-      }, 1)
-    }
+  public win() {
+    setTimeout(() => {
+      alert('You won!');
+      this.init();
+    }, 1)
   }
 
   private hasWon(): boolean {
     return this.words[this.selectedRow].value === this.solutionWord;
-  }
-
-  private isLastRow(): boolean {
-    return this.selectedRow === this.tryLimit - 1;
   }
 
   private isFirstColumn(): boolean {
@@ -93,5 +73,9 @@ export class GameService {
 
   public isLastColumn(): boolean {
     return this.selectedColumn === this.solutionWord.length;
+  }
+
+  private addWord() {
+    this.words.push(new Word(this.solutionWord.length));
   }
 }
