@@ -43,8 +43,35 @@ export class Word {
         return this._letters.every(letter => letter.value !== '');
     }
 
+    public isEmpty(): boolean {
+        return this._letters.every(letter => letter.isEmpty());
+    }
+
+    public itIsNotFirstLetter() {
+        return !this._letters[0].isEmpty();
+    }
+
     public addLetter(letter: Letter) {
         const index: number = this._letters.findIndex(l => l.value === '');
         this._letters[index] = letter;
+    }
+
+    public removeLetter() {
+        if (!this.isEmpty() && this.itIsNotFirstLetter()) {
+            const index: number = this.findLastLetterIndex();
+            this._letters[index].reset();
+            console.log(this._letters);
+        }
+    }
+
+    public findLastLetterIndex(): number {
+        let l = this._letters.length ;
+
+        while(l--) {
+            if (!this._letters[l].isEmpty() && this._letters[l].hasNoStyle()) {
+                return l;
+            }
+        }
+        return -1;
     }
 }

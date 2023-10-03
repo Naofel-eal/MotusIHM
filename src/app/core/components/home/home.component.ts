@@ -40,17 +40,21 @@ export class HomeComponent {
     const userWordLength: number = this.gameService.words[this.gameService.selectedRow].letters.length;
 
     for (let letterIndex = 0; letterIndex < userWordLength; letterIndex++) {
-      let currentLetter: Letter = this.gameService.words[this.gameService.selectedRow].getLetterByIndex(letterIndex);
-      if (this.gameService.solutionWord[letterIndex] === currentLetter.value) {
-        currentLetter.style = LetterStyle.CORRECT;
+      const currentLetter: Letter = this.gameService.words[this.gameService.selectedRow].getLetterByIndex(letterIndex);
+
+      if (currentLetter.style === LetterStyle.EMPTY) {
+        const expectedLetter: string = this.gameService.solutionWord[letterIndex];
+        if (currentLetter.value === expectedLetter) {
+          currentLetter.style = LetterStyle.CORRECT;
+        }
+        else if (this.gameService.solutionWord.includes(currentLetter.value)) {
+          currentLetter.style = LetterStyle.ALMOST;
+        }
+        else {
+          currentLetter.style = LetterStyle.INCORRECT;
+        }
+        await asyncTimeout(HomeComponent.LETTER_ANIMATION_DURATION_IN_MS);
       }
-      else if (this.gameService.solutionWord.includes(currentLetter.value)) {
-        currentLetter.style = LetterStyle.ALMOST;
-      }
-      else {
-        currentLetter.style = LetterStyle.INCORRECT;
-      }
-      await asyncTimeout(HomeComponent.LETTER_ANIMATION_DURATION_IN_MS);
     }
   }
 

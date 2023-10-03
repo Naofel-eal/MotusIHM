@@ -29,4 +29,12 @@ export class Letter {
         this._value = '';
         this._style = LetterStyle.EMPTY;
     }
+
+    public isEmpty(): boolean {
+        return this._value === '';
+    }
+
+    public hasNoStyle(): boolean {
+        return this._style === LetterStyle.EMPTY;
+    }
 }

@@ -57,10 +57,8 @@ export class GameService {
   }
 
   public removeLetter() {
-    if (!this.isFirstColumn()) {
-      this.selectedColumn--;
-      this.words[this.selectedRow].letters[this.selectedColumn].reset();
-    }
+    this.words[this.selectedRow].removeLetter();
+    this.selectedColumn--;
   }
 
   public win() {
@@ -75,10 +73,6 @@ export class GameService {
 
   private hasWon(): boolean {
     return this.words[this.selectedRow].value === this.solutionWord;
-  }
-
-  private isFirstColumn(): boolean {
-    return this.selectedColumn === 0;
   }
 
   public isLastColumn(): boolean {
