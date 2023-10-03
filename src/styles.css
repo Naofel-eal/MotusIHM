@@ -15,7 +15,7 @@ html {
 body {
     height: 100vh;
     width: 100vw;
-    background-color: black;
+    background-color: #000000e9;
     display: flex;
     flex-direction: column;
     align-items: center;

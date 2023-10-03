@@ -21,6 +21,10 @@
     align-items: center;
 }
 
+.selected-cell {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
 p {
     color: rgb(223, 223, 223);
     height: 100%;

@@ -62,4 +62,8 @@ export class HomeComponent {
     const regex: RegExp = /^[a-zA-ZÀ-ÖØ-öø-ÿ-]$/;
     return regex.test(key);
   }
+
+  public isActive(rowIndex: number, colIndex: number) {
+    return this.gameService.selectedRow === rowIndex && this.gameService.words[this.gameService.selectedRow].getCurrentLetterIndex() === colIndex;
+  }
 }

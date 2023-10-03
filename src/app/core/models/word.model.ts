@@ -60,7 +60,6 @@ export class Word {
         if (!this.isEmpty() && this.itIsNotFirstLetter()) {
             const index: number = this.findLastLetterIndex();
             this._letters[index].reset();
-            console.log(this._letters);
         }
     }
 
@@ -73,5 +72,9 @@ export class Word {
             }
         }
         return -1;
+    }
+
+    public getCurrentLetterIndex(): number {
+        return this._letters.findIndex(l => l.value === '');
     }
 }

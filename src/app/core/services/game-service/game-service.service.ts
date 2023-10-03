@@ -12,7 +12,6 @@ export class GameService {
   public words: Word[] = [];
   public solutionWord: string = '';
   public selectedRow: number = 0;
-  private selectedColumn: number = 0;
   private testLimit: number = 0;
 
   constructor(private wordService: WordService) {
@@ -23,7 +22,6 @@ export class GameService {
     this.words = [];
     this.solutionWord = '';
     this.selectedRow = 0;
-    this.selectedColumn = 0;
     this.testLimit = 7;
 
     this.wordService.generateRandomWord().subscribe(response => {
@@ -39,7 +37,6 @@ export class GameService {
   public addLetter(key: string) {
     const letter: Letter = new Letter(key, LetterStyle.EMPTY)
     this.words[this.selectedRow].addLetter(letter);
-    this.selectedColumn++;
   }
 
   public moveToNextRow() {
@@ -51,14 +48,12 @@ export class GameService {
     }
     else {
       this.selectedRow++;
-      this.selectedColumn = 0;
       this.restoreValidLetters();
     }
   }
 
   public removeLetter() {
     this.words[this.selectedRow].removeLetter();
-    this.selectedColumn--;
   }
 
   public win() {
@@ -67,16 +62,12 @@ export class GameService {
   }
 
   public lose() {
-      alert(Message.LOSE);
+      alert(Message.LOSE + " IT WAS " + this.solutionWord);
       this.newGame();
   }
 
   private hasWon(): boolean {
     return this.words[this.selectedRow].value === this.solutionWord;
-  }
-
-  public isLastColumn(): boolean {
-    return this.selectedColumn === this.solutionWord.length;
   }
 
   private isLastRow(): boolean {

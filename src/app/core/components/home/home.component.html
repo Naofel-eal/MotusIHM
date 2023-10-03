@@ -1,11 +1,12 @@
 <div class="container">
     <h1>GUESS THE WORD</h1>
     <div class="game">
-        <div class="row" *ngFor="let word of this.gameService.words">
+        <div class="row" *ngFor="let word of this.gameService.words; let rowIndex = index;">
             <div 
                 class="cell" 
-                *ngFor="let letter of word.letters; let index = index;" 
-                [ngClass]="letter.style">
+                *ngFor="let letter of word.letters; let colIndex = index;" 
+                [class]="letter.style"
+                [ngClass]="{'selected-cell': isActive(rowIndex, colIndex)}">
                 <p>{{letter.value}}</p>
             </div>
         </div>
