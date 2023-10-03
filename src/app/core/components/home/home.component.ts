@@ -21,16 +21,17 @@ export class HomeComponent {
     if (!this.canPlay) {
       return;
     }
-    if(this.isValidCharacter(event.key)) {
-      this.gameService.addLetter(event.key);
-      if (this.gameService.isLastColumn()) {
+    const key = event.key.toUpperCase();
+    if(this.isValidCharacter(key)) {
+      this.gameService.addLetter(key);
+      if (this.gameService.words[this.gameService.selectedRow].isComplete()) {
         this.canPlay = false;
         await this.animateLetters();
         this.gameService.moveToNextRow();
         this.canPlay = true;
       }
     }
-    else if (event.key === 'Backspace') {
+    else if (key === 'BACKSPACE') {
       this.gameService.removeLetter();
     } 
   }

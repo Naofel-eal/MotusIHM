@@ -29,4 +29,22 @@ export class Word {
     public getLetterByIndex(index: number): Letter {
         return this._letters[index];
     }
+
+    public setLetterByIndex(index: number, letter: Letter) {
+        if (index >= this._letters.length) {
+            throw new Error('Index out of bounds');
+        }
+        else {
+            this._letters[index] = letter;
+        }
+    }
+
+    public isComplete(): boolean {
+        return this._letters.every(letter => letter.value !== '');
+    }
+
+    public addLetter(letter: Letter) {
+        const index: number = this._letters.findIndex(l => l.value === '');
+        this._letters[index] = letter;
+    }
 }

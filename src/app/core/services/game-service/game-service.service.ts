@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { WordService } from '../world-service/word-service.service';
 import { Word } from '../../models/word.model';
 import { Message } from '../../enumerations/message.enum';
+import { LetterStyle } from '../../enumerations/letter-style.enum';
+import { Letter } from '../../models/letter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +16,10 @@ export class GameService {
   private testLimit: number = 0;
 
   constructor(private wordService: WordService) {
-    this.init();
+    this.newGame();
   }
 
-  public init() {
+  public newGame() {
     this.words = [];
     this.solutionWord = '';
     this.selectedRow = 0;
@@ -35,7 +37,8 @@ export class GameService {
   }
 
   public addLetter(key: string) {
-    this.words[this.selectedRow].letters[this.selectedColumn].value = key.toUpperCase();
+    const letter: Letter = new Letter(key, LetterStyle.EMPTY)
+    this.words[this.selectedRow].addLetter(letter);
     this.selectedColumn++;
   }
 
@@ -43,14 +46,13 @@ export class GameService {
     if(this.hasWon()) {
       this.win();
     }
+    else if (this.isLastRow()) {
+      this.lose()
+    }
     else {
-      if (this.isLastRow()) {
-        this.lose()
-      }
-      else {
-        this.selectedRow++;
-        this.selectedColumn = 0;
-      }
+      this.selectedRow++;
+      this.selectedColumn = 0;
+      this.restoreValidLetters();
     }
   }
 
@@ -62,17 +64,13 @@ export class GameService {
   }
 
   public win() {
-    setTimeout(() => {
-      alert(Message.WIN);
-      this.init();
-    }, 1)
+    alert(Message.WIN);
+    this.newGame();
   }
 
   public lose() {
-    setTimeout(() => {
       alert(Message.LOSE);
-      this.init();
-    }, 1)
+      this.newGame();
   }
 
   private hasWon(): boolean {
@@ -93,5 +91,15 @@ export class GameService {
 
   private addWord() {
     this.words.push(new Word(this.solutionWord.length));
+  }
+
+  private restoreValidLetters() {
+    const previousWord: Word = this.words[this.selectedRow - 1];
+    for(let i = 0; i < previousWord.letters.length; i++) {
+      const currentLetter: Letter = previousWord.getLetterByIndex(i); 
+      if(currentLetter.style === LetterStyle.CORRECT) {
+        this.words[this.selectedRow].setLetterByIndex(i, currentLetter)
+      }
+    }
   }
 }
