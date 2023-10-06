@@ -1,20 +1,26 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { GameService } from '../../services/game-service/game-service.service';
 import { LetterStyle } from '../../enumerations/letter-style.enum';
 import { Letter } from '../../models/letter.model';
 import { asyncTimeout } from '../../utils/async-timeout';
+import { Message } from '../../enumerations/message.enum';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [GameService]
+  providers: [GameService, MessageService]
 })
 export class HomeComponent {
   private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
   private canPlay: boolean = true;
+  public title = Message.TITLE.toUpperCase();
 
-  public constructor(public gameService: GameService) { }
+  public constructor(
+    public gameService: GameService, 
+    public messageService: MessageService
+  ) { }
 
   @HostListener('window:keyup', ['$event'])
   public async keyEvent(event: KeyboardEvent) {

@@ -4,6 +4,7 @@ import { Word } from '../../models/word.model';
 import { Message } from '../../enumerations/message.enum';
 import { LetterStyle } from '../../enumerations/letter-style.enum';
 import { Letter } from '../../models/letter.model';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,19 @@ export class GameService {
   public words: Word[] = [];
   public solutionWord: string = '';
   public selectedRow: number = 0;
-  private testLimit: number = 0;
+  public readonly testLimit: number = 7;
+  public isLoading: boolean = true;
 
-  constructor(private wordService: WordService) {
+  constructor(private wordService: WordService, private messageService: MessageService) {
     this.newGame();
   }
 
   public newGame() {
+    const startTime: number = Date.now();
+    this.isLoading = true;
     this.words = [];
     this.solutionWord = '';
     this.selectedRow = 0;
-    this.testLimit = 7;
 
     this.wordService.generateRandomWord().subscribe(response => {
       const word: string = JSON.parse(response)[0].name;
@@ -30,6 +33,17 @@ export class GameService {
 
       for(let i = 0; i < this.testLimit; i++) {
         this.addWord();
+      }
+
+      const endTime: number = Date.now();
+      const deltaTimeInSeconds: number = (endTime - startTime) / 1000;
+      if (deltaTimeInSeconds < 1) {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, (1 - deltaTimeInSeconds) * 1000);
+      }
+      else {
+        this.isLoading = false;
       }
     });
   }
@@ -57,13 +71,14 @@ export class GameService {
   }
 
   public win() {
-    alert(Message.WIN);
+    //alert(Message.WIN.toUpperCase());
+    this.messageService.add({severity:'success', summary: Message.WIN, detail: Message.A_NEW_GAME_WILL_START});
     this.newGame();
   }
 
   public lose() {
-      alert(Message.LOSE + " IT WAS " + this.solutionWord);
-      this.newGame();
+    this.messageService.add({severity:'error', summary: Message.LOSE, detail: Message.THE_WORD_WAS + this.solutionWord});
+    this.newGame();
   }
 
   private hasWon(): boolean {

@@ -1,18 +1,31 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule  } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './core/components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { LoadingComponent } from './core/components/loading/loading.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    DynamicDialogModule,
+    ButtonModule,
+    ToastModule,
+    SkeletonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

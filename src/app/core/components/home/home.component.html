@@ -1,6 +1,7 @@
 <div class="container">
-    <h1>GUESS THE WORD</h1>
-    <div class="game">
+    <h1>{{title}}</h1>
+    <p-toast></p-toast>
+    <div class="game" *ngIf="!this.gameService.isLoading">
         <div class="row" *ngFor="let word of this.gameService.words; let rowIndex = index;">
             <div 
                 class="cell" 
@@ -11,4 +12,6 @@
             </div>
         </div>
     </div>
+
+    <app-loading *ngIf="this.gameService.isLoading"></app-loading>
 </div>

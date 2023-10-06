@@ -6,16 +6,11 @@
     height: 100%;
 }
 
-.row {
-    display: flex;
-    width: fit-content;
-}
-
 .cell {
     width: 100px;
     height: 100px;
     border: 2px solid rgb(223, 223, 223);
-
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +20,7 @@
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-p {
+.cell > p {
     color: rgb(223, 223, 223);
     height: 100%;
     width: 100%;

@@ -59,13 +59,14 @@ export class Word {
     public removeLetter() {
         if (!this.isEmpty() && this.itIsNotFirstLetter()) {
             const index: number = this.findLastLetterIndex();
-            this._letters[index].reset();
+            if (index !== -1) {
+                this._letters[index].reset();
+            }
         }
     }
 
     public findLastLetterIndex(): number {
         let l = this._letters.length ;
-
         while(l--) {
             if (!this._letters[l].isEmpty() && this._letters[l].hasNoStyle()) {
                 return l;
