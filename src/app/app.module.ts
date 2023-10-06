@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SkeletonModule } from 'primeng/skeleton';
     DynamicDialogModule,
     ButtonModule,
     ToastModule,
-    SkeletonModule
+    SkeletonModule,
+    ProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

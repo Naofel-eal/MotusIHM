@@ -16,11 +16,10 @@ export class GameService {
   public readonly testLimit: number = 7;
   public isLoading: boolean = true;
 
-  constructor(private wordService: WordService, private messageService: MessageService) {
-    this.newGame();
-  }
+  constructor(private wordService: WordService, private messageService: MessageService) { }
 
   public newGame() {
+    this.messageService.add({severity:'info', summary: Message.STARTING, detail: Message.FECTHING_WORD});
     const startTime: number = Date.now();
     this.isLoading = true;
     this.words = [];
@@ -40,7 +39,7 @@ export class GameService {
       if (deltaTimeInSeconds < 1) {
         setTimeout(() => {
           this.isLoading = false;
-        }, (1 - deltaTimeInSeconds) * 1000);
+        }, (2 - deltaTimeInSeconds) * 1000);
       }
       else {
         this.isLoading = false;
@@ -71,7 +70,6 @@ export class GameService {
   }
 
   public win() {
-    //alert(Message.WIN.toUpperCase());
     this.messageService.add({severity:'success', summary: Message.WIN, detail: Message.A_NEW_GAME_WILL_START});
     this.newGame();
   }

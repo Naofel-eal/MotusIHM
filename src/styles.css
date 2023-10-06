@@ -10,6 +10,7 @@ html, body, h1 {
 html {
     max-width: 100vw;
     max-height: 100vh;
+    overflow: hidden;
 }
 
 body {
@@ -29,4 +30,8 @@ app-root {
 .row {
     display: flex;
     width: fit-content;
+}
+
+p {
+    margin: 0;
 }
