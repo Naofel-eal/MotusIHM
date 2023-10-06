@@ -39,7 +39,7 @@ export class GameService {
       if (deltaTimeInSeconds < 1) {
         setTimeout(() => {
           this.isLoading = false;
-        }, (2 - deltaTimeInSeconds) * 1000);
+        }, (1 - deltaTimeInSeconds) * 1000);
       }
       else {
         this.isLoading = false;
@@ -71,12 +71,16 @@ export class GameService {
 
   public win() {
     this.messageService.add({severity:'success', summary: Message.WIN, detail: Message.A_NEW_GAME_WILL_START});
-    this.newGame();
+    setTimeout(() => {
+      this.newGame();
+    }, 1000);
   }
 
   public lose() {
     this.messageService.add({severity:'error', summary: Message.LOSE, detail: Message.THE_WORD_WAS + this.solutionWord});
-    this.newGame();
+    setTimeout(() => {
+      this.newGame();
+    }, 1000);
   }
 
   private hasWon(): boolean {
