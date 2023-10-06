@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SpeedDialModule } from 'primeng/speeddial';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ButtonModule,
     ToastModule,
     SkeletonModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    SpeedDialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

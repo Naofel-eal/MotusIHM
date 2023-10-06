@@ -14,18 +14,58 @@ import { fadeInOut } from '../../animations/animations';
   providers: [GameService, MessageService],
   animations: [fadeInOut]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
   private canPlay: boolean = true;
   public title = Message.TITLE.toUpperCase();
+  public items: any[] = []
 
   public constructor(
     public gameService: GameService, 
     public messageService: MessageService
-  ) { }
-
-  ngOnInit(): void {
+  ) { 
     this.gameService.newGame();
+    this.items = [
+      {
+          icon: 'pi pi-refresh',
+          tooltipOptions: {
+            tooltipLabel: 'Restart game'
+          },
+          command: () => {
+              this.messageService.add({ severity: 'info', summary: 'Restarting', detail: 'Starting a new game...' });
+          }
+      },
+      {
+        icon: 'pi pi-info',
+        tooltipOptions: {
+          tooltipLabel: 'Game rules'
+        },
+        command: () => {
+          this.messageService.add({ severity: 'info', summary: 'Game rules', detail: 'Find the word' });
+        }
+      },
+      {
+        icon: 'pi pi-github',
+        tooltipOptions: {
+          tooltipLabel: 'My Github'
+        },
+        target: '_blank',
+        url: 'https://github.com/Naofel-eal',
+        command: () => {
+          this.messageService.add({ severity: 'info', summary: 'Github', detail: 'Creator: Naofel EL ALOUANI' });
+        }
+      },
+      {
+        icon: 'pi pi-key',
+        tooltipOptions: {
+          tooltipLabel: 'Tip'
+        },
+        command: () => {
+          this.messageService.add({ severity: 'info', summary: 'Tip', detail: 'A letter has been revealed !'})
+        }
+      }
+  ];
+
   }
 
   @HostListener('window:keyup', ['$event'])

@@ -13,7 +13,8 @@ export class GameService {
   public words: Word[] = [];
   public solutionWord: string = '';
   public selectedRow: number = 0;
-  public readonly testLimit: number = 7;
+  public readonly TEST_LIMIT: number = 7;
+  public readonly DELAY_BEFORE_NEW_GAME_IN_MS: number = 3000;
   public isLoading: boolean = true;
 
   constructor(private wordService: WordService, private messageService: MessageService) { }
@@ -30,7 +31,7 @@ export class GameService {
       const word: string = JSON.parse(response)[0].name;
       this.solutionWord = this.wordService.normalize(word);
 
-      for(let i = 0; i < this.testLimit; i++) {
+      for(let i = 0; i < this.TEST_LIMIT; i++) {
         this.addWord();
       }
 
@@ -73,14 +74,14 @@ export class GameService {
     this.messageService.add({severity:'success', summary: Message.WIN, detail: Message.A_NEW_GAME_WILL_START});
     setTimeout(() => {
       this.newGame();
-    }, 1000);
+    }, this.DELAY_BEFORE_NEW_GAME_IN_MS);
   }
 
   public lose() {
     this.messageService.add({severity:'error', summary: Message.LOSE, detail: Message.THE_WORD_WAS + this.solutionWord});
     setTimeout(() => {
       this.newGame();
-    }, 1000);
+    }, this.DELAY_BEFORE_NEW_GAME_IN_MS);
   }
 
   private hasWon(): boolean {
@@ -88,7 +89,7 @@ export class GameService {
   }
 
   private isLastRow(): boolean {
-    return this.selectedRow === this.testLimit - 1;
+    return this.selectedRow === this.TEST_LIMIT - 1;
   }
 
   private addWord() {
