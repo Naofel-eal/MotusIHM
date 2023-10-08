@@ -6,7 +6,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   selector: 'app-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.css'],
-  providers: [GameService, ProgressSpinnerModule],
+  providers: [],
   animations: []
 })
 export class LoadingComponent {

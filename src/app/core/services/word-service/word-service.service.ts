@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { APIWord } from '../../models/API-word';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class WordService {
 
   constructor(private http: HttpClient) { }
 
-  public generateRandomWords(): Observable<string> {
-    return this.http.get(this.apiURL + this.numberOfLoadedWords , { responseType: 'text' })
+  public generateRandomWords(): Observable<APIWord[]> {
+    return this.http.get<APIWord[]>(this.apiURL + this.numberOfLoadedWords)
   }
 
   public normalize(word: string): string {

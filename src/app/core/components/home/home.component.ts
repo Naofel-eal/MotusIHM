@@ -1,30 +1,28 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { GameService } from '../../services/game-service/game-service.service';
-import { LetterStyle } from '../../enumerations/letter-style.enum';
-import { Letter } from '../../models/letter.model';
+import { Letter } from '../../models/letter/letter.model';
 import { asyncTimeout } from '../../utils/async-timeout';
-import { Message } from '../../enumerations/message.enum';
 import { MessageService } from 'primeng/api';
 import { fadeInOut } from '../../animations/animations';
+import { LetterUtils } from '../../utils/letter-utils';
+import { Text } from '../../constants/text';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [GameService, MessageService],
   animations: [fadeInOut]
 })
 export class HomeComponent {
   private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
   private canPlay: boolean = true;
-  public title = Message.TITLE.toUpperCase();
-  public items: any[] = []
+  public title = Text.TITLE.toUpperCase();
+  public items: any[] = [];
 
   public constructor(
     public gameService: GameService, 
     public messageService: MessageService
-  ) { 
-    this.gameService.newGame();
+) { 
     this.items = [
       {
           icon: 'pi pi-refresh',
@@ -73,8 +71,7 @@ export class HomeComponent {
           this.messageService.add({ severity: 'info', summary: 'Github', detail: 'Creator: Naofel EL ALOUANI' });
         }
       }
-  ];
-
+    ];
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -85,7 +82,7 @@ export class HomeComponent {
     const key = event.key.toUpperCase();
     if(this.isValidCharacter(key)) {
       this.gameService.addLetter(key);
-      if (this.gameService.words[this.gameService.selectedRow].isComplete()) {
+      if (this.gameService.userWords[this.gameService.currentUserWordIndex].isComplete()) {
         this.canPlay = false;
         await this.animateLetters();
         this.gameService.moveToNextRow();
@@ -98,33 +95,35 @@ export class HomeComponent {
   }
 
   private async animateLetters() {
-    const userWordLength: number = this.gameService.words[this.gameService.selectedRow].letters.length;
+    const currentWords = this.gameService.userWords[this.gameService.currentUserWordIndex];
+    const solutionWord: string = this.gameService.solutionWords[this.gameService.currentSolutionWordIndex];
 
-    for (let letterIndex = 0; letterIndex < userWordLength; letterIndex++) {
-      const currentLetter: Letter = this.gameService.words[this.gameService.selectedRow].getLetterByIndex(letterIndex);
-      const solutionWord: string = this.gameService.solutionWords[this.gameService.selectedSolutionWord];
-      if (currentLetter.style === LetterStyle.EMPTY) {
+    for (const [letterIndex, currentLetter] of currentWords.letters.entries()) {
+      if (LetterUtils.isPendingLetter(currentLetter)) {
         const expectedLetter: string = solutionWord[letterIndex];
+        let newLetter: Letter;
+
         if (currentLetter.value === expectedLetter) {
-          currentLetter.style = LetterStyle.CORRECT;
+          newLetter = LetterUtils.toCorrectLetter(currentLetter);
         }
         else if (solutionWord.includes(currentLetter.value)) {
-          currentLetter.style = LetterStyle.ALMOST;
+          newLetter = LetterUtils.toAlmostLetter(currentLetter);
         }
         else {
-          currentLetter.style = LetterStyle.INCORRECT;
+          newLetter = LetterUtils.toIncorrectLetter(currentLetter);
         }
+        currentWords.setLetterByIndex(letterIndex, newLetter);
         await asyncTimeout(HomeComponent.LETTER_ANIMATION_DURATION_IN_MS);
       }
     }
-  }
+}
 
   private isValidCharacter(key: string): boolean {
-    const regex: RegExp = /^[a-zA-ZÀ-ÖØ-öø-ÿ-]$/;
+    const regex: RegExp = /^[a-zA-Z]$/;
     return regex.test(key);
   }
 
   public isActive(rowIndex: number, colIndex: number) {
-    return this.gameService.selectedRow === rowIndex && this.gameService.words[this.gameService.selectedRow].getCurrentLetterIndex() === colIndex;
+    return this.gameService.currentUserWordIndex === rowIndex && this.gameService.userWords[this.gameService.currentUserWordIndex].getCurrentLetterIndex() === colIndex;
   }
 }

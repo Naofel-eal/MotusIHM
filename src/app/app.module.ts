@@ -12,12 +12,16 @@ import { LoadingComponent } from './core/components/loading/loading.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { MessageOverlayComponent } from './core/components/message-overlay/message-overlay.component';
+import { GameService } from './core/services/game-service/game-service.service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoadingComponent,
+    MessageOverlayComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +33,9 @@ import { SpeedDialModule } from 'primeng/speeddial';
     ToastModule,
     SkeletonModule,
     ProgressSpinnerModule,
-    SpeedDialModule
+    SpeedDialModule,
   ],
-  providers: [],
+  providers: [GameService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
