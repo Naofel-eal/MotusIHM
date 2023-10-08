@@ -5,13 +5,15 @@ import { Message } from '../../enumerations/message.enum';
 import { LetterStyle } from '../../enumerations/letter-style.enum';
 import { Letter } from '../../models/letter.model';
 import { MessageService } from 'primeng/api';
+import { APIWord } from '../../models/API-word';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   public words: Word[] = [];
-  public solutionWord: string = '';
+  public solutionWords: string[] = [];
+  public selectedSolutionWord: number = 0;
   public selectedRow: number = 0;
   public readonly TEST_LIMIT: number = 7;
   public readonly DELAY_BEFORE_NEW_GAME_IN_MS: number = 3000;
@@ -19,32 +21,44 @@ export class GameService {
 
   constructor(private wordService: WordService, private messageService: MessageService) { }
 
-  public newGame() {
+  public async newGame() {
+    this.words = [];
+    this.selectedRow = 0;
+    if (this.isFirstGame()) {
+      this.isLoading = true;
+      this.generateNewWords().then((solutions: string[]) => {
+        this.solutionWords = solutions;
+        this.addWordsToGrid();
+        console.log(this.solutionWords)
+      });
+    }
+    else {
+      this.selectedSolutionWord++;
+      if (this.isLastWord()) {
+        this.generateNewWords().then((solutions: string[]) => {
+          this.solutionWords = this.solutionWords.concat(solutions);
+        });
+      }
+      this.addWordsToGrid();
+    }
+  }
+
+  public async generateNewWords(): Promise<string[]> {
     this.messageService.add({severity:'info', summary: Message.STARTING, detail: Message.FECTHING_WORD});
     const startTime: number = Date.now();
-    this.isLoading = true;
-    this.words = [];
-    this.solutionWord = '';
-    this.selectedRow = 0;
-
-    this.wordService.generateRandomWord().subscribe(response => {
-      const word: string = JSON.parse(response)[0].name;
-      this.solutionWord = this.wordService.normalize(word);
-
-      for(let i = 0; i < this.TEST_LIMIT; i++) {
-        this.addWord();
-      }
-
-      const endTime: number = Date.now();
-      const deltaTimeInSeconds: number = (endTime - startTime) / 1000;
-      if (deltaTimeInSeconds < 1) {
-        setTimeout(() => {
-          this.isLoading = false;
-        }, (1 - deltaTimeInSeconds) * 1000);
-      }
-      else {
-        this.isLoading = false;
-      }
+    return new Promise((resolve, reject) => {
+      let solutions: string[] = [];
+      this.wordService.generateRandomWords().subscribe(response => {
+        const apiWords: APIWord[] = JSON.parse(response);
+        for(let i = 0; i < apiWords.length; i++) {
+          const name: string = apiWords[i].name;
+          solutions.push(this.wordService.normalize(name));
+        }
+  
+        const endTime: number = Date.now();
+        this.waitAfterFetchingWords(startTime, endTime);
+        resolve(solutions);
+      }); 
     });
   }
 
@@ -78,22 +92,25 @@ export class GameService {
   }
 
   public lose() {
-    this.messageService.add({severity:'error', summary: Message.LOSE, detail: Message.THE_WORD_WAS + this.solutionWord});
+    this.messageService.add({severity:'error', summary: Message.LOSE, detail: Message.THE_WORD_WAS + this.solutionWords[this.selectedSolutionWord]});
     setTimeout(() => {
       this.newGame();
     }, this.DELAY_BEFORE_NEW_GAME_IN_MS);
   }
 
   private hasWon(): boolean {
-    return this.words[this.selectedRow].value === this.solutionWord;
+    return this.words[this.selectedRow].value === this.solutionWords[this.selectedSolutionWord];
   }
 
   private isLastRow(): boolean {
     return this.selectedRow === this.TEST_LIMIT - 1;
   }
 
-  private addWord() {
-    this.words.push(new Word(this.solutionWord.length));
+  private addWordsToGrid() {
+    this.words = []; 
+    for(let i = 0; i < this.TEST_LIMIT; i++) {
+      this.words.push(new Word(this.solutionWords[this.selectedSolutionWord].length));
+    }
   }
 
   private restoreValidLetters() {
@@ -103,6 +120,26 @@ export class GameService {
       if(currentLetter.style === LetterStyle.CORRECT) {
         this.words[this.selectedRow].setLetterByIndex(i, currentLetter)
       }
+    }
+  }
+
+  private isFirstGame(): boolean {
+    return this.solutionWords.length === 0;
+  }
+
+  private isLastWord(): boolean {
+    return this.selectedSolutionWord === this.solutionWords.length - 1;
+  }
+
+  private waitAfterFetchingWords(startTime: number, endTime: number) {
+    const deltaTimeInSeconds: number = (endTime - startTime) / 1000;
+    if (deltaTimeInSeconds < 1) {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, (1 - deltaTimeInSeconds) * 1000);
+    }
+    else {
+      this.isLoading = false;
     }
   }
 }

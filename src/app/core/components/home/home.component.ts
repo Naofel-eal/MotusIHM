@@ -32,8 +32,26 @@ export class HomeComponent {
             tooltipLabel: 'Restart game'
           },
           command: () => {
-              this.messageService.add({ severity: 'info', summary: 'Restarting', detail: 'Starting a new game...' });
+              this.gameService.newGame();
           }
+      },
+      {
+        icon: 'pi pi-key',
+        tooltipOptions: {
+          tooltipLabel: 'Tip'
+        },
+        command: () => {
+          this.messageService.add({ severity: 'info', summary: 'Tip', detail: 'A letter has been revealed !'})
+        }
+      },
+      {
+        icon: 'pi pi-cog',
+        tooltipOptions: {
+          tooltipLabel: 'Settings'
+        },
+        command: () => {
+          this.messageService.add({severity: 'info', summary: 'Settings', detail: 'You can set the size of generated words'})
+        }
       },
       {
         icon: 'pi pi-info',
@@ -53,15 +71,6 @@ export class HomeComponent {
         url: 'https://github.com/Naofel-eal',
         command: () => {
           this.messageService.add({ severity: 'info', summary: 'Github', detail: 'Creator: Naofel EL ALOUANI' });
-        }
-      },
-      {
-        icon: 'pi pi-key',
-        tooltipOptions: {
-          tooltipLabel: 'Tip'
-        },
-        command: () => {
-          this.messageService.add({ severity: 'info', summary: 'Tip', detail: 'A letter has been revealed !'})
         }
       }
   ];
@@ -93,13 +102,13 @@ export class HomeComponent {
 
     for (let letterIndex = 0; letterIndex < userWordLength; letterIndex++) {
       const currentLetter: Letter = this.gameService.words[this.gameService.selectedRow].getLetterByIndex(letterIndex);
-
+      const solutionWord: string = this.gameService.solutionWords[this.gameService.selectedSolutionWord];
       if (currentLetter.style === LetterStyle.EMPTY) {
-        const expectedLetter: string = this.gameService.solutionWord[letterIndex];
+        const expectedLetter: string = solutionWord[letterIndex];
         if (currentLetter.value === expectedLetter) {
           currentLetter.style = LetterStyle.CORRECT;
         }
-        else if (this.gameService.solutionWord.includes(currentLetter.value)) {
+        else if (solutionWord.includes(currentLetter.value)) {
           currentLetter.style = LetterStyle.ALMOST;
         }
         else {

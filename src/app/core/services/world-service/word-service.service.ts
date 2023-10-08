@@ -6,13 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WordService {
-  private apiURL: string = "https://trouve-mot.fr/api/random"
-  public solutionWord: string = '';
+  private apiURL: string = "https://trouve-mot.fr/api/random/"
+  private readonly numberOfLoadedWords: number = 3;
 
   constructor(private http: HttpClient) { }
 
-  public generateRandomWord(): Observable<string> {
-    return this.http.get(this.apiURL, { responseType: 'text' })
+  public generateRandomWords(): Observable<string> {
+    return this.http.get(this.apiURL + this.numberOfLoadedWords , { responseType: 'text' })
   }
 
   public normalize(word: string): string {
