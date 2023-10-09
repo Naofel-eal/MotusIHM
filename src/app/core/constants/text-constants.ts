@@ -1,5 +1,5 @@
-export class Text {
-    public static TITLE = 'tus-mo';
+export class TextConstants {
+    public static TITLE = 'tusmo';
     public static WIN = 'Victoire !';
     public static LOSE = 'Perdu !';
     public static THE_WORD_WAS = 'Le mot était : ';

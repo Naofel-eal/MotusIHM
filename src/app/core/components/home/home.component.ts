@@ -5,7 +5,7 @@ import { asyncTimeout } from '../../utils/async-timeout';
 import { MessageService } from 'primeng/api';
 import { fadeInOut } from '../../animations/animations';
 import { LetterUtils } from '../../utils/letter-utils';
-import { Text } from '../../constants/text';
+import { TextConstants } from '../../constants/text-constants';
 
 @Component({
   selector: 'app-home',
@@ -16,8 +16,8 @@ import { Text } from '../../constants/text';
 export class HomeComponent {
   private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
   private canPlay: boolean = true;
-  public title = Text.TITLE.toUpperCase();
   public items: any[] = [];
+  public title: string = TextConstants.TITLE.toUpperCase();
 
   public constructor(
     public gameService: GameService, 
@@ -94,7 +94,7 @@ export class HomeComponent {
     } 
   }
 
-  private async animateLetters() {
+  private async animateLetters(): Promise<void> {
     const currentWords = this.gameService.userWords[this.gameService.currentUserWordIndex];
     const solutionWord: string = this.gameService.solutionWords[this.gameService.currentSolutionWordIndex];
 
@@ -123,7 +123,7 @@ export class HomeComponent {
     return regex.test(key);
   }
 
-  public isActive(rowIndex: number, colIndex: number) {
+  public isActive(rowIndex: number, colIndex: number): boolean {
     return this.gameService.currentUserWordIndex === rowIndex && this.gameService.userWords[this.gameService.currentUserWordIndex].getCurrentLetterIndex() === colIndex;
   }
 }

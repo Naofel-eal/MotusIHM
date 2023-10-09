@@ -7,7 +7,9 @@
         direction="up-right" 
         type="quarter-circle" 
     ></p-speedDial>
+
     <h1>{{title}}</h1>
+
     <div class="game">  
         <div class="row" *ngFor="let word of this.gameService.userWords; let rowIndex = index;">
             <div 

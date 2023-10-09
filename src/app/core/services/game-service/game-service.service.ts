@@ -8,7 +8,7 @@ import { asyncTimeout } from '../../utils/async-timeout';
 import { Observable, tap } from 'rxjs';
 import { CorrectLetter } from '../../models/letter/correct-letter';
 import { PendingLetter } from '../../models/letter/pending-letter';
-import { Text } from '../../constants/text';
+import { TextConstants } from '../../constants/text-constants';
 
 @Injectable()
 export class GameService {
@@ -46,7 +46,7 @@ export class GameService {
   }
   
   public generateNewWords(): Observable<APIWord[]> {
-    this.messageService.add({severity:'info', summary: Text.STARTING, detail: Text.FECTHING_WORD});
+    this.messageService.add({severity:'info', summary: TextConstants.STARTING, detail: TextConstants.FECTHING_WORD});
     const startTime: number = Date.now();
 
     return this.wordService.generateRandomWords().pipe(
@@ -83,13 +83,13 @@ export class GameService {
   }
 
   public async win() {
-    this.messageService.add({severity:'success', summary: Text.WIN, detail: Text.A_NEW_GAME_WILL_START});
+    this.messageService.add({severity:'success', summary: TextConstants.WIN, detail: TextConstants.A_NEW_GAME_WILL_START});
     await asyncTimeout(GameService.DELAY_BEFORE_NEW_GAME_IN_MS);
     this.newGame();
   }
 
   public async lose() {
-    this.messageService.add({severity:'error', summary: Text.LOSE, detail: Text.THE_WORD_WAS + this.solutionWords[this.currentSolutionWordIndex]});
+    this.messageService.add({severity:'error', summary: TextConstants.LOSE, detail: TextConstants.THE_WORD_WAS + this.solutionWords[this.currentSolutionWordIndex]});
     await asyncTimeout(GameService.DELAY_BEFORE_NEW_GAME_IN_MS);
     await this.newGame();
   }
