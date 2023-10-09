@@ -1,0 +1,30 @@
+.container {
+    font-size: 1.2rem;
+}
+
+ul {
+    list-style-type: none;
+}
+ul > li {
+    text-indent: -5px;
+}
+ul > li:before {
+content: "-";
+text-indent: -5px;
+}
+
+.green {
+    color: rgb(0, 110, 0);
+}
+
+.red {
+    color: rgb(100, 0, 0);
+}
+
+.yellow {
+    color: rgb(200, 130, 0);
+}
+
+.center {
+    text-align: center;
+}

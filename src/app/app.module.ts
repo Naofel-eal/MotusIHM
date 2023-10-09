@@ -12,16 +12,16 @@ import { LoadingComponent } from './core/components/loading/loading.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SpeedDialModule } from 'primeng/speeddial';
-import { MessageOverlayComponent } from './core/components/message-overlay/message-overlay.component';
 import { GameService } from './core/services/game-service/game-service.service';
 import { MessageService } from 'primeng/api';
+import { RulesComponent } from './core/components/rules/rules.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoadingComponent,
-    MessageOverlayComponent,
+    RulesComponent,
   ],
   imports: [
     BrowserModule,

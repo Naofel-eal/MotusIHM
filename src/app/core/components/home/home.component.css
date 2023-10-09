@@ -51,7 +51,7 @@ h1 {
 }
 
 h1::first-letter {
-    color: rgb(0, 110, 0);
+    color: rgba(59, 130, 246, 1);
 }
 
 .title-m {

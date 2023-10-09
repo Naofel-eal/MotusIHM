@@ -6,22 +6,27 @@ import { MessageService } from 'primeng/api';
 import { fadeInOut } from '../../animations/animations';
 import { LetterUtils } from '../../utils/letter-utils';
 import { TextConstants } from '../../constants/text-constants';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { RulesComponent } from '../rules/rules.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  animations: [fadeInOut]
+  animations: [fadeInOut],
+  providers: [DialogService]
 })
 export class HomeComponent {
   private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
+  public title: string = TextConstants.TITLE.toUpperCase();
   private canPlay: boolean = true;
   public items: any[] = [];
-  public title: string = TextConstants.TITLE.toUpperCase();
+  public ref: DynamicDialogRef | undefined;
 
   public constructor(
-    public gameService: GameService, 
-    public messageService: MessageService
+    public gameService: GameService,
+    private dialogService: DialogService,
+    public messageService: MessageService,
 ) { 
     this.items = [
       {
@@ -48,7 +53,7 @@ export class HomeComponent {
           tooltipLabel: 'Settings'
         },
         command: () => {
-          this.messageService.add({severity: 'info', summary: 'Settings', detail: 'You can set the size of generated words'})
+          this.showSettings();
         }
       },
       {
@@ -57,7 +62,7 @@ export class HomeComponent {
           tooltipLabel: 'Game rules'
         },
         command: () => {
-          this.messageService.add({ severity: 'info', summary: 'Game rules', detail: 'Find the word' });
+          this.showRules();
         }
       },
       {
@@ -125,5 +130,20 @@ export class HomeComponent {
 
   public isActive(rowIndex: number, colIndex: number): boolean {
     return this.gameService.currentUserWordIndex === rowIndex && this.gameService.userWords[this.gameService.currentUserWordIndex].getCurrentLetterIndex() === colIndex;
+  }
+
+  public showRules(): void {
+    this.canPlay = false;
+    this.ref = this.dialogService.open(RulesComponent, {
+      header: 'Game rules',
+      width: 'fit-content',
+      contentStyle: {"overflow": "auto"}
+    });
+    this.ref.onClose.subscribe(() => {
+      this.canPlay = true;  
+    });
+  }
+
+  public showSettings(): void {
   }
 }
