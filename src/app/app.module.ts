@@ -15,6 +15,8 @@ import { SpeedDialModule } from 'primeng/speeddial';
 import { GameService } from './core/services/game-service/game-service.service';
 import { MessageService } from 'primeng/api';
 import { RulesComponent } from './core/components/rules/rules.component';
+import { SettingsComponent } from './core/components/settings/settings.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { RulesComponent } from './core/components/rules/rules.component';
     HomeComponent,
     LoadingComponent,
     RulesComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +37,7 @@ import { RulesComponent } from './core/components/rules/rules.component';
     SkeletonModule,
     ProgressSpinnerModule,
     SpeedDialModule,
+    InputTextModule
   ],
   providers: [GameService, MessageService],
   bootstrap: [AppComponent]

@@ -9,11 +9,10 @@ import { Observable, tap } from 'rxjs';
 import { CorrectLetter } from '../../models/letter/correct-letter';
 import { PendingLetter } from '../../models/letter/pending-letter';
 import { TextConstants } from '../../constants/text-constants';
+import { GameSettingsService } from '../game-settings/game-settings.service';
 
 @Injectable()
 export class GameService {
-  public static readonly TEST_LIMIT: number = 7;
-  public static readonly DELAY_BEFORE_NEW_GAME_IN_MS: number = 2000;
   public userWords: Word[] = [];
   public solutionWords: string[] = [];
   public currentSolutionWordIndex: number = 0;
@@ -23,7 +22,8 @@ export class GameService {
 
   public constructor(
     private readonly wordService: WordService,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private gameSettingsService: GameSettingsService
   ) {
     this.isLoading = true;
     this.generateNewWords().subscribe(() => {
@@ -84,13 +84,13 @@ export class GameService {
 
   public async win() {
     this.messageService.add({severity:'success', summary: TextConstants.WIN, detail: TextConstants.A_NEW_GAME_WILL_START});
-    await asyncTimeout(GameService.DELAY_BEFORE_NEW_GAME_IN_MS);
+    await asyncTimeout(this.gameSettingsService.delayBeforeNewGame);
     this.newGame();
   }
 
   public async lose() {
     this.messageService.add({severity:'error', summary: TextConstants.LOSE, detail: TextConstants.THE_WORD_WAS + this.solutionWords[this.currentSolutionWordIndex]});
-    await asyncTimeout(GameService.DELAY_BEFORE_NEW_GAME_IN_MS);
+    await asyncTimeout(this.gameSettingsService.delayBeforeNewGame);
     await this.newGame();
   }
 
@@ -99,13 +99,13 @@ export class GameService {
   }
 
   private isLastRow(): boolean {
-    return this.currentUserWordIndex === GameService.TEST_LIMIT - 1;
+    return this.currentUserWordIndex === this.gameSettingsService.maxNumberOfTries - 1;
   }
 
   private resetGrid() {
     this.currentUserWordIndex = 0;
     this.userWords = []; 
-    for(let i = 0; i < GameService.TEST_LIMIT; i++) {
+    for(let i = 0; i < this.gameSettingsService.maxNumberOfTries; i++) {
       this.userWords.push(new Word(this.solutionWords[this.currentSolutionWordIndex].length));
     }
   }

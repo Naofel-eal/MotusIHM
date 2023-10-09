@@ -8,6 +8,8 @@ import { LetterUtils } from '../../utils/letter-utils';
 import { TextConstants } from '../../constants/text-constants';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RulesComponent } from '../rules/rules.component';
+import { SettingsComponent } from '../settings/settings.component';
+import { GameSettingsService } from '../../services/game-settings/game-settings.service';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +29,7 @@ export class HomeComponent {
     public gameService: GameService,
     private dialogService: DialogService,
     public messageService: MessageService,
+    private gameSettingsService: GameSettingsService
 ) { 
     this.items = [
       {
@@ -53,6 +56,7 @@ export class HomeComponent {
           tooltipLabel: 'Settings'
         },
         command: () => {
+          this.canPlay = false;
           this.showSettings();
         }
       },
@@ -62,6 +66,7 @@ export class HomeComponent {
           tooltipLabel: 'Game rules'
         },
         command: () => {
+          this.canPlay = false;
           this.showRules();
         }
       },
@@ -118,7 +123,7 @@ export class HomeComponent {
           newLetter = LetterUtils.toIncorrectLetter(currentLetter);
         }
         currentWords.setLetterByIndex(letterIndex, newLetter);
-        await asyncTimeout(HomeComponent.LETTER_ANIMATION_DURATION_IN_MS);
+        await asyncTimeout(this.gameSettingsService.letterAnimationDurationInMs);
       }
     }
 }
@@ -133,7 +138,6 @@ export class HomeComponent {
   }
 
   public showRules(): void {
-    this.canPlay = false;
     this.ref = this.dialogService.open(RulesComponent, {
       header: 'Game rules',
       width: 'fit-content',
@@ -145,5 +149,14 @@ export class HomeComponent {
   }
 
   public showSettings(): void {
+    this.ref = this.dialogService.open(SettingsComponent, {
+      header: 'Game rules',
+      width: 'fit-content',
+      contentStyle: {"overflow": "auto"}
+    });
+    this.ref.onClose.subscribe(() => {
+      this.canPlay = true;
+      this.messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! There will be apllied at the next game.'});  
+    });
   }
 }
