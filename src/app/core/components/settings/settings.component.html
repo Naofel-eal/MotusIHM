@@ -5,7 +5,7 @@
     </div>
     <div class="option-block">
         <label htmlFor="number-of-word-loaded-at-once">Number of word loaded at once:</label>
-        <input pInputText type="number" id="letter-animation-duration" [(ngModel)]="gameSettingsService.numberOfWordLoadedAtOnce" />
+        <input pInputText type="number" id="number-of-word-loaded-at-once" [(ngModel)]="gameSettingsService.numberOfWordLoadedAtOnce" />
     </div>
     <div class="option-block">
         <label htmlFor="minimum-word-length">Minimum word length:</label>
@@ -13,15 +13,15 @@
     </div>
     <div class="option-block">
         <label htmlFor="maximum-word-length">Maximum word length:</label>
-        <input pInputText type="number" id="maximum-word-length" [(ngModel)]="gameSettingsService.minWordLength" />
+        <input pInputText type="number" id="maximum-word-length" [(ngModel)]="gameSettingsService.maxWordLength" />
     </div>
     <div class="option-block">
         <label htmlFor="max-number-of-tries">Maximum number of tries:</label>
         <input pInputText type="number" id="max-number-of-tries" [(ngModel)]="gameSettingsService.maxNumberOfTries" />
     </div>
     <div class="option-block">
-        <label htmlFor="max-number-of-tries">Delay before a new game (in ms):</label>
-        <input pInputText type="number" id="max-number-of-tries" [(ngModel)]="gameSettingsService.delayBeforeNewGame" />
+        <label htmlFor="delay-before-new-game">Delay before a new game (in ms):</label>
+        <input pInputText type="number" id="delay-before-new-game" [(ngModel)]="gameSettingsService.delayBeforeNewGame" />
     </div>
-    
+    <p-button label="Reset settings" (onClick)="reset()"></p-button>
 </div>

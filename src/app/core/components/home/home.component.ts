@@ -150,7 +150,7 @@ export class HomeComponent {
 
   public showSettings(): void {
     this.ref = this.dialogService.open(SettingsComponent, {
-      header: 'Game rules',
+      header: 'Game Settings',
       width: 'fit-content',
       contentStyle: {"overflow": "auto"}
     });

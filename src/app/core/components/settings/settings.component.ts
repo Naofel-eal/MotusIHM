@@ -8,4 +8,8 @@ import { GameSettingsService } from '../../services/game-settings/game-settings.
 })
 export class SettingsComponent {
   public constructor(public gameSettingsService: GameSettingsService) { }
+
+  public reset(): void {
+    this.gameSettingsService.reset();
+  }
 }

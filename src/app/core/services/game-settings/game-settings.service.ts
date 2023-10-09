@@ -12,5 +12,14 @@ export class GameSettingsService {
   public maxNumberOfTries: number = 7;
   public delayBeforeNewGame: number = 2000;
 
-  constructor() { }
+  public constructor() { }
+
+  public reset(): void {
+    this.letterAnimationDurationInMs = 300;
+    this.numberOfWordLoadedAtOnce = 10;
+    this.minWordLength = 3;
+    this.maxWordLength = 15;
+    this.maxNumberOfTries = 7;
+    this.delayBeforeNewGame = 2000;
+  }
 }
