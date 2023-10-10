@@ -29,3 +29,17 @@ label {
 p-button {
     align-self: center;
 }
+
+input {
+    width: 100%;
+}
+
+p-inputSwitch {
+    margin-right: 1rem;
+}
+
+.grouped-inputs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

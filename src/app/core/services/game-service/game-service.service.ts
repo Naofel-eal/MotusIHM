@@ -25,7 +25,16 @@ export class GameService {
     private readonly messageService: MessageService,
     private gameSettingsService: GameSettingsService
   ) {
+    this.init();
+  }
+
+  public init() {
+    this.userWords = [];
+    this.solutionWords = [];
+    this.currentSolutionWordIndex = 0;
+    this.currentUserWordIndex = 0;
     this.isLoading = true;
+    this.isFirstGame = true;
     this.generateNewWords().subscribe(() => {
       this.newGame();
     });
@@ -84,13 +93,13 @@ export class GameService {
 
   public async win() {
     this.messageService.add({severity:'success', summary: TextConstants.WIN, detail: TextConstants.A_NEW_GAME_WILL_START});
-    await asyncTimeout(this.gameSettingsService.delayBeforeNewGame);
+    await asyncTimeout(this.gameSettingsService.delayBeforeNewGame.Value);
     this.newGame();
   }
 
   public async lose() {
     this.messageService.add({severity:'error', summary: TextConstants.LOSE, detail: TextConstants.THE_WORD_WAS + this.solutionWords[this.currentSolutionWordIndex]});
-    await asyncTimeout(this.gameSettingsService.delayBeforeNewGame);
+    await asyncTimeout(this.gameSettingsService.delayBeforeNewGame.Value);
     await this.newGame();
   }
 
@@ -99,13 +108,13 @@ export class GameService {
   }
 
   private isLastRow(): boolean {
-    return this.currentUserWordIndex === this.gameSettingsService.maxNumberOfTries - 1;
+    return this.currentUserWordIndex === this.gameSettingsService.maxNumberOfTries.Value - 1;
   }
 
   private resetGrid() {
     this.currentUserWordIndex = 0;
     this.userWords = []; 
-    for(let i = 0; i < this.gameSettingsService.maxNumberOfTries; i++) {
+    for(let i = 0; i < this.gameSettingsService.maxNumberOfTries.Value; i++) {
       this.userWords.push(new Word(this.solutionWords[this.currentSolutionWordIndex].length));
     }
   }

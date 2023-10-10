@@ -1,25 +1,29 @@
 import { Injectable } from '@angular/core';
+import { Setting } from '../../models/setting';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameSettingsService {
-  public readonly apiURL: string = "https://trouve-mot.fr/api/random/"
-  public letterAnimationDurationInMs: number = 300;
-  public numberOfWordLoadedAtOnce: number = 10;
-  public minWordLength: number = 3;
-  public maxWordLength: number = 15;
-  public maxNumberOfTries: number = 7;
-  public delayBeforeNewGame: number = 2000;
+  public letterAnimationDurationInMs!: Setting;
+  public numberOfWordLoadedAtOnce!: Setting;
+  public maxWordLength!: Setting;
+  public maxNumberOfTries!: Setting;
+  public delayBeforeNewGame!: Setting;
 
-  public constructor() { }
+  public constructor() { 
+    this.init();
+  }
+
+  public init(): void {
+    this.letterAnimationDurationInMs = new Setting(true, 300);
+    this.numberOfWordLoadedAtOnce = new Setting(true, 10);
+    this.maxWordLength = new Setting(true, 15);
+    this.maxNumberOfTries = new Setting(true, 7);
+    this.delayBeforeNewGame = new Setting(true, 2000);
+  }
 
   public reset(): void {
-    this.letterAnimationDurationInMs = 300;
-    this.numberOfWordLoadedAtOnce = 10;
-    this.minWordLength = 3;
-    this.maxWordLength = 15;
-    this.maxNumberOfTries = 7;
-    this.delayBeforeNewGame = 2000;
+    this.init();
   }
 }

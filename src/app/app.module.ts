@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { RulesComponent } from './core/components/rules/rules.component';
 import { SettingsComponent } from './core/components/settings/settings.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { InputTextModule } from 'primeng/inputtext';
     SkeletonModule,
     ProgressSpinnerModule,
     SpeedDialModule,
-    InputTextModule
+    InputTextModule,
+    InputSwitchModule,
   ],
   providers: [GameService, MessageService],
   bootstrap: [AppComponent]

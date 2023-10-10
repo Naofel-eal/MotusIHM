@@ -10,6 +10,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RulesComponent } from '../rules/rules.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { GameSettingsService } from '../../services/game-settings/game-settings.service';
+import { Setting } from '../../models/setting';
 
 @Component({
   selector: 'app-home',
@@ -123,7 +124,7 @@ export class HomeComponent {
           newLetter = LetterUtils.toIncorrectLetter(currentLetter);
         }
         currentWords.setLetterByIndex(letterIndex, newLetter);
-        await asyncTimeout(this.gameSettingsService.letterAnimationDurationInMs);
+        await asyncTimeout(this.gameSettingsService.letterAnimationDurationInMs.Value);
       }
     }
 }
@@ -149,14 +150,22 @@ export class HomeComponent {
   }
 
   public showSettings(): void {
+    const maxWordLengthBeforeSettings: Setting = new Setting(this.gameSettingsService.maxWordLength.Enabled, this.gameSettingsService.maxWordLength.Value);
+
     this.ref = this.dialogService.open(SettingsComponent, {
       header: 'Game Settings',
       width: 'fit-content',
       contentStyle: {"overflow": "auto"}
     });
     this.ref.onClose.subscribe(() => {
+      if(this.gameSettingsService.maxWordLength !== maxWordLengthBeforeSettings) {
+        this.gameService.init();
+      }
+      else {
+        this.messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! '}); 
+        this.gameService.newGame();
+      }
       this.canPlay = true;
-      this.messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! There will be apllied at the next game.'});  
     });
   }
 }

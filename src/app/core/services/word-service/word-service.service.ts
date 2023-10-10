@@ -8,13 +8,18 @@ import { GameSettingsService } from '../game-settings/game-settings.service';
   providedIn: 'root'
 })
 export class WordService {
+  private static readonly apiUrl: string = "https://trouve-mot.fr/api/";
+
   constructor(
     private http: HttpClient,
     private gameSettingsService: GameSettingsService
   ) { }
 
   public generateRandomWords(): Observable<APIWord[]> {
-    return this.http.get<APIWord[]>(this.gameSettingsService.apiURL + this.gameSettingsService.numberOfWordLoadedAtOnce)
+    const defaultPath: string = WordService.apiUrl + "random/" + this.gameSettingsService.numberOfWordLoadedAtOnce.Value;
+    const pathWithMaxWordLength: string = WordService.apiUrl + "sizemax/" + this.gameSettingsService.maxWordLength.Value + "/" + this.gameSettingsService.numberOfWordLoadedAtOnce.Value;
+    const path: string = this.gameSettingsService.maxWordLength.Enabled ? pathWithMaxWordLength : defaultPath;
+    return this.http.get<APIWord[]>(path);
   }
 
   public normalize(word: string): string {
