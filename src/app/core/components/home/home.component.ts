@@ -3,7 +3,7 @@ import { GameService } from '../../services/game-service/game-service.service';
 import { Letter } from '../../models/letter/letter.model';
 import { asyncTimeout } from '../../utils/async-timeout';
 import { MessageService } from 'primeng/api';
-import { fadeInOut } from '../../animations/animations';
+import { fadeInOut, growInOut } from '../../animations/animations';
 import { LetterUtils } from '../../utils/letter-utils';
 import { TextConstants } from '../../constants/text-constants';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -16,7 +16,7 @@ import { Setting } from '../../models/setting';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  animations: [fadeInOut],
+  animations: [fadeInOut, growInOut],
   providers: [DialogService]
 })
 export class HomeComponent {
@@ -48,7 +48,7 @@ export class HomeComponent {
           tooltipLabel: 'Tip'
         },
         command: () => {
-          this.messageService.add({ severity: 'info', summary: 'Tip', detail: 'A letter has been revealed !'})
+          this.gameService.revealRandomUnfoundLetter();
         }
       },
       {

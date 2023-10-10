@@ -128,8 +128,7 @@ export class GameService {
         currentUserWord.setLetterByIndex(i, currentLetter);
       }
     });
-}
-
+  }
 
   private mustLoadNewWords(): boolean {
     return this.currentSolutionWordIndex === this.solutionWords.length - 1;
@@ -143,6 +142,23 @@ export class GameService {
     }
     else {
       this.isLoading = false;
+    }
+  }
+
+  public revealRandomUnfoundLetter() {
+    const solutionWord: string = this.solutionWords[this.currentSolutionWordIndex];
+    const userWord: Word = this.userWords[this.currentUserWordIndex];
+    const unfoundLetterIndexes: number[] = [];
+    for (let i = 0; i < solutionWord.length; i++) {
+      if (userWord.letters[i].value === "") {
+        unfoundLetterIndexes.push(i);
+      }
+    }
+    const randomIndex: number = unfoundLetterIndexes[Math.floor(Math.random() * unfoundLetterIndexes.length)];
+    const randomLetter: string = solutionWord[randomIndex];
+    userWord.setLetterByIndex(randomIndex, new CorrectLetter(randomLetter));
+    if (userWord.isComplete()) {
+      this.moveToNextRow();
     }
   }
 }
