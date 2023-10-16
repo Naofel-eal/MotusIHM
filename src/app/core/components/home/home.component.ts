@@ -3,7 +3,7 @@ import { GameService } from '../../services/game-service/game-service.service';
 import { Letter } from '../../models/letter/letter.model';
 import { asyncTimeout } from '../../utils/async-timeout';
 import { MessageService } from 'primeng/api';
-import { fadeInOut, growInOut } from '../../animations/animations';
+import { fadeInOut, letterAnimation } from '../../animations/animations';
 import { LetterUtils } from '../../utils/letter-utils';
 import { TextConstants } from '../../constants/text-constants';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -16,13 +16,13 @@ import { Setting } from '../../models/setting';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  animations: [fadeInOut, growInOut],
+  animations: [fadeInOut, letterAnimation],
   providers: [DialogService]
 })
 export class HomeComponent {
   private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
   public title: string = TextConstants.TITLE.toUpperCase();
-  private canPlay: boolean = true;
+  public canPlay: boolean = true;
   public items: any[] = [];
   public ref: DynamicDialogRef | undefined;
 

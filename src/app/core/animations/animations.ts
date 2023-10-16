@@ -10,15 +10,11 @@ export const fadeInOut = trigger('fadeInOut', [
     animate(600, style({ opacity: 0 })))
 ]);
 
-export const growInOut = trigger('growInOut', [
-    state('in', style({ transform: 'scale(1)' })),
+export const letterAnimation = trigger('letterAnimation', [
+    state('in', style({ transform: "rotateY(0deg)" })),
     
     transition(':enter', [
-        style({ transform: 'scale(0)' }),
-        animate('600ms ease-out')
+        style({ opacity: 0, transform: "rotateY(180deg)" }),
+        animate('300ms ease-in-out')
     ]),
-    
-    transition(':leave', [
-        animate('600ms ease-in', style({ transform: 'scale(0)' }))
-    ])
 ]);

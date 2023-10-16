@@ -16,7 +16,8 @@
                 class="cell" 
                 *ngFor="let letter of word.letters; let colIndex = index;" 
                 [class]="letter.htmlClass"
-                [ngClass]="{'selected-cell': isActive(rowIndex, colIndex)}">
+                [ngClass]="{'selected-cell': isActive(rowIndex, colIndex)}"
+                [@letterAnimation] [@.disabled]="!word.isComplete()">
                 <p>{{letter.value}}</p>
             </div>
         </div>
