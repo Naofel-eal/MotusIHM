@@ -24,8 +24,6 @@ The player continues to guess until they either guess the correct word or exhaus
 
 1. **Dependency Injection**: Angular's core feature, Dependency Injection (DI), is extensively used in the game. Services like `GameService`, `WordService`, and `GameSettingsService` are injected into components to manage game logic, fetch words, and handle game settings respectively.
 
-2. **Service-Oriented Architecture**: The game logic is separated into distinct services. For instance, `WordService` handles word-related operations, while `GameService` manages the game's core logic.
-
 3. **Animations**: The game uses Angular animations to enhance the user experience. Transitions like `fadeInOut` and `letterAnimation` are used to provide visual feedback to the player.
 
 4. **Utility Functions**: Utility functions like `asyncTimeout` and `LetterUtils` are used to handle common tasks and letter manipulations.

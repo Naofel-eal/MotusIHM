@@ -18,7 +18,6 @@ export class GameSettingsService {
   public init(): void {
     this.letterAnimationDurationInMs = new Setting(true, 300);
     this.numberOfWordLoadedAtOnce = new Setting(true, 10);
-    this.maxWordLength = new Setting(false, 15);
     this.maxNumberOfTries = new Setting(true, 7);
     this.delayBeforeNewGame = new Setting(true, 2000);
   }

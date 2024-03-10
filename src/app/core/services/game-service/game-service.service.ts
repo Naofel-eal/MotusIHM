@@ -55,16 +55,20 @@ export class GameService {
   }
   
   public generateNewWords(): Observable<APIWord[]> {
-    this.messageService.add({severity:'info', summary: TextConstants.STARTING, detail: TextConstants.FECTHING_WORD});
+    this.messageService.add({severity:'info', summary: TextConstants.STARTING, detail: TextConstants.FETCHING_WORD});
     const startTime: number = Date.now();
 
-    return this.wordService.generateRandomWords().pipe(
-      tap((apiWords: APIWord[]) => {
-        apiWords.forEach((apiWord: APIWord) => {
-          this.solutionWords.push(this.wordService.normalize(apiWord.name));
-        });
+    return this.wordService.generateNewWords().pipe(
+      tap((apiWords: any) => {
+        if (Array.isArray(apiWords)) {
+          this.solutionWords = this.solutionWords.concat(apiWords.map(apiWord => apiWord.value));
+        } else {
+          console.error('apiWords n\'est pas un tableau:', apiWords);
+        }
+      }),
+      tap(() => {
         const endTime: number = Date.now();
-        return this.waitAfterFetchingWords(startTime, endTime);
+        this.waitAfterFetchingWords(startTime, endTime);
       })
     );
   }

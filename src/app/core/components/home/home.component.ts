@@ -150,21 +150,14 @@ export class HomeComponent {
   }
 
   public showSettings(): void {
-    const maxWordLengthBeforeSettings: Setting = new Setting(this.gameSettingsService.maxWordLength.Enabled, this.gameSettingsService.maxWordLength.Value);
-
     this.ref = this.dialogService.open(SettingsComponent, {
       header: 'Game Settings',
       width: 'fit-content',
       contentStyle: {"overflow": "auto"}
     });
     this.ref.onClose.subscribe(() => {
-      if(this.gameSettingsService.maxWordLength !== maxWordLengthBeforeSettings) {
-        this.gameService.init();
-      }
-      else {
-        this.messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! '}); 
-        this.gameService.newGame();
-      }
+      this.messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! '}); 
+      this.gameService.newGame();
       this.canPlay = true;
     });
   }

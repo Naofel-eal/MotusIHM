@@ -8,13 +8,6 @@
         <input pInputText type="number" min="1" max="15" oninput="validity.valid||(value=max);" id="number-of-word-loaded-at-once" [(ngModel)]="gameSettingsService.numberOfWordLoadedAtOnce.Value" />
     </div>
     <div class="option-block">
-        <div class="grouped-inputs">
-            <label htmlFor="maximum-word-length">Maximum word length:</label>
-            <p-inputSwitch [(ngModel)]="gameSettingsService.maxWordLength.Enabled" [disabled]="false"></p-inputSwitch>
-        </div>
-        <input pInputText type="number" min="1" max="15" oninput="validity.valid||(value=max);" [(ngModel)]="gameSettingsService.maxWordLength.Value" [disabled]="!gameSettingsService.maxWordLength.Enabled" id="maximum-word-length" />
-    </div>
-    <div class="option-block">
         <label htmlFor="max-number-of-tries">Maximum number of tries:</label>
         <input pInputText type="number" min="1" max="10" oninput="validity.valid||(value=max);" id="max-number-of-tries" [(ngModel)]="gameSettingsService.maxNumberOfTries.Value" />
     </div>
