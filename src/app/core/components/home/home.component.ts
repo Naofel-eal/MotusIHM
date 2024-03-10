@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { GameService } from '../../services/game-service/game-service.service';
+import { GameService } from '../../services/game-service/game.service';
 import { Letter } from '../../models/letter/letter.model';
 import { asyncTimeout } from '../../utils/async-timeout';
 import { MessageService } from 'primeng/api';
@@ -10,7 +10,6 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RulesComponent } from '../rules/rules.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { GameSettingsService } from '../../services/game-settings/game-settings.service';
-import { Setting } from '../../models/setting';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +19,7 @@ import { Setting } from '../../models/setting';
   providers: [DialogService]
 })
 export class HomeComponent {
-  private static readonly LETTER_ANIMATION_DURATION_IN_MS: number = 300;
   public title: string = TextConstants.TITLE.toUpperCase();
-  public canPlay: boolean = true;
   public items: any[] = [];
   public ref: DynamicDialogRef | undefined;
 
@@ -57,7 +54,7 @@ export class HomeComponent {
           tooltipLabel: 'Settings'
         },
         command: () => {
-          this.canPlay = false;
+          this.gameService.canPlay = false;
           this.showSettings();
         }
       },
@@ -67,7 +64,7 @@ export class HomeComponent {
           tooltipLabel: 'Game rules'
         },
         command: () => {
-          this.canPlay = false;
+          this.gameService.canPlay = false;
           this.showRules();
         }
       },
@@ -87,17 +84,30 @@ export class HomeComponent {
 
   @HostListener('window:keyup', ['$event'])
   public async keyEvent(event: KeyboardEvent) {
-    if (!this.canPlay) {
+    if (!this.gameService.canPlay) {
+      event.stopPropagation();
       return;
     }
+
     const key = event.key.toUpperCase();
+    
     if(this.isValidCharacter(key)) {
       this.gameService.addLetter(key);
       if (this.gameService.userWords[this.gameService.currentUserWordIndex].isComplete()) {
-        this.canPlay = false;
+        this.gameService.canPlay = false;
         await this.animateLetters();
-        this.gameService.moveToNextRow();
-        this.canPlay = true;
+
+        if(this.gameService.hasWon()) {
+          await this.gameService.win();
+        }
+        else if (this.gameService.isLastRow()) {
+          await this.gameService.lose()
+        }
+        else {
+          this.gameService.moveToNextRow();
+        }
+
+        this.gameService.canPlay = true;
       }
     }
     else if (key === 'BACKSPACE') {
@@ -122,7 +132,8 @@ export class HomeComponent {
         }
         else {
           newLetter = LetterUtils.toIncorrectLetter(currentLetter);
-        }
+        } 
+
         currentWords.setLetterByIndex(letterIndex, newLetter);
         await asyncTimeout(this.gameSettingsService.letterAnimationDurationInMs.Value);
       }
@@ -145,7 +156,7 @@ export class HomeComponent {
       contentStyle: {"overflow": "auto"}
     });
     this.ref.onClose.subscribe(() => {
-      this.canPlay = true;  
+      this.gameService.canPlay = true;  
     });
   }
 
@@ -158,7 +169,7 @@ export class HomeComponent {
     this.ref.onClose.subscribe(() => {
       this.messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! '}); 
       this.gameService.newGame();
-      this.canPlay = true;
+      this.gameService.canPlay = true;
     });
   }
 }

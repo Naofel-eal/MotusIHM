@@ -12,7 +12,7 @@ import { LoadingComponent } from './core/components/loading/loading.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SpeedDialModule } from 'primeng/speeddial';
-import { GameService } from './core/services/game-service/game-service.service';
+import { GameService } from './core/services/game-service/game.service';
 import { MessageService } from 'primeng/api';
 import { RulesComponent } from './core/components/rules/rules.component';
 import { SettingsComponent } from './core/components/settings/settings.component';

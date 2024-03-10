@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { APIWord } from '../../models/API-word';
 import { GameSettingsService } from '../game-settings/game-settings.service';
-import { RequestService } from '../request-service/request.service';
+import { WordRepository } from '../request-service/request.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class WordService {
 
   constructor(
     private gameSettingsService: GameSettingsService,
-    private requestService: RequestService
+    private requestService: WordRepository
   ) { }
 
   public generateNewWords(): Observable<APIWord[]> {

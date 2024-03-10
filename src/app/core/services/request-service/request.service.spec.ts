@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RequestService } from './request.service';
+import { WordRepository } from './request.service';
 
 describe('RequestService', () => {
-  let service: RequestService;
+  let service: WordRepository;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RequestService);
+    service = TestBed.inject(WordRepository);
   });
 
   it('should be created', () => {

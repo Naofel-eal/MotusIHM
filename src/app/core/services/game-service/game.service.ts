@@ -5,7 +5,7 @@ import { Letter } from '../../models/letter/letter.model';
 import { MessageService } from 'primeng/api';
 import { APIWord } from '../../models/API-word';
 import { asyncTimeout } from '../../utils/async-timeout';
-import { Observable, tap } from 'rxjs';
+import { Observable, forkJoin, map, tap, timer } from 'rxjs';
 import { CorrectLetter } from '../../models/letter/correct-letter';
 import { PendingLetter } from '../../models/letter/pending-letter';
 import { TextConstants } from '../../constants/text-constants';
@@ -19,6 +19,7 @@ export class GameService {
   public currentUserWordIndex: number = 0;
   public isLoading: boolean = true;
   public isFirstGame: boolean = true;
+  public canPlay: boolean = false;
 
   public constructor(
     private readonly wordService: WordService,
@@ -40,7 +41,8 @@ export class GameService {
     });
   }
 
-  public async newGame(): Promise<void> {
+  public newGame(): void {
+    this.canPlay = true;
     if (this.isFirstGame) {
       this.isFirstGame = false;
     } 
@@ -56,20 +58,22 @@ export class GameService {
   
   public generateNewWords(): Observable<APIWord[]> {
     this.messageService.add({severity:'info', summary: TextConstants.STARTING, detail: TextConstants.FETCHING_WORD});
-    const startTime: number = Date.now();
 
-    return this.wordService.generateNewWords().pipe(
-      tap((apiWords: any) => {
+    return forkJoin(
+    [
+      this.wordService.generateNewWords(),
+      timer(1000)
+    ])
+    .pipe(
+      map(([apiWords]: [APIWord[], number]) => apiWords),
+      tap((apiWords: APIWord[]) => {
         if (Array.isArray(apiWords)) {
           this.solutionWords = this.solutionWords.concat(apiWords.map(apiWord => apiWord.value));
         } else {
           console.error('apiWords n\'est pas un tableau:', apiWords);
         }
+        this.isLoading = false;
       }),
-      tap(() => {
-        const endTime: number = Date.now();
-        this.waitAfterFetchingWords(startTime, endTime);
-      })
     );
   }
 
@@ -78,17 +82,9 @@ export class GameService {
     this.userWords[this.currentUserWordIndex].addLetter(letter);
   }
 
-  public moveToNextRow() {
-    if(this.hasWon()) {
-      this.win();
-    }
-    else if (this.isLastRow()) {
-      this.lose()
-    }
-    else {
+  public moveToNextRow() { 
       this.currentUserWordIndex++;
       this.restoreValidLetters();
-    }
   }
 
   public removeLetter() {
@@ -104,14 +100,14 @@ export class GameService {
   public async lose() {
     this.messageService.add({severity:'error', summary: TextConstants.LOSE, detail: TextConstants.THE_WORD_WAS + this.solutionWords[this.currentSolutionWordIndex]});
     await asyncTimeout(this.gameSettingsService.delayBeforeNewGame.Value);
-    await this.newGame();
+    this.newGame();
   }
 
-  private hasWon(): boolean {
+  public hasWon(): boolean {
     return this.userWords[this.currentUserWordIndex].value === this.solutionWords[this.currentSolutionWordIndex];
   }
 
-  private isLastRow(): boolean {
+  public isLastRow(): boolean {
     return this.currentUserWordIndex === this.gameSettingsService.maxNumberOfTries.Value - 1;
   }
 
@@ -136,17 +132,6 @@ export class GameService {
 
   private mustLoadNewWords(): boolean {
     return this.currentSolutionWordIndex === this.solutionWords.length - 1;
-  }
-
-  private async waitAfterFetchingWords(startTime: number, endTime: number) {
-    const deltaTimeInSeconds: number = (endTime - startTime) / 1000;
-    if (deltaTimeInSeconds < 1) {
-      await asyncTimeout((1 - deltaTimeInSeconds) * 1000);
-      this.isLoading = false;
-    }
-    else {
-      this.isLoading = false;
-    }
   }
 
   public revealRandomUnfoundLetter() {

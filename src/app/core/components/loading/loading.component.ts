@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameService } from '../../services/game-service/game-service.service';
+import { GameService } from '../../services/game-service/game.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({

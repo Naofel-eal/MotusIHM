@@ -6,7 +6,7 @@ import { APIResponse } from '../../models/infrastructure/APIResponse';
 @Injectable({
   providedIn: 'root'
 })
-export class RequestService {
+export class WordRepository {
   private readonly apiUrl: string = "http://localhost:8080/";
 
   constructor(private http: HttpClient) { }
