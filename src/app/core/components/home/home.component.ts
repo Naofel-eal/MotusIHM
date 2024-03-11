@@ -95,18 +95,16 @@ export class HomeComponent {
       this.gameService.addLetter(key);
       if (this.gameService.userWords[this.gameService.currentUserWordIndex].isComplete()) {
         this.gameService.canPlay = false;
-        await this.animateLetters();
 
-        if(this.gameService.hasWon()) {
-          await this.gameService.win();
-        }
-        else if (this.gameService.isLastRow()) {
-          await this.gameService.lose()
+        const isWordValid = await this.gameService.validateWord();
+        if(isWordValid) {
+          await this.animateLetters();
+          await this.gameService.handleWinOrLose();
         }
         else {
-          this.gameService.moveToNextRow();
+          this.gameService.clearCurrentWord();
         }
-
+  
         this.gameService.canPlay = true;
       }
     }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WordService } from '../word-service/word-service.service';
+import { WordService } from '../word-service/word.service';
 import { Word } from '../../models/word';
 import { Letter } from '../../models/letter/letter.model';
 import { MessageService } from 'primeng/api';
@@ -75,6 +75,42 @@ export class GameService {
         this.isLoading = false;
       }),
     );
+  }
+
+  public async handleWinOrLose() {
+    if(this.hasWon()) {
+      await this.win();
+    }
+    else if (this.isLastRow()) {
+      await this.lose()
+    }
+    else {
+      this.moveToNextRow();
+    }
+  }
+
+  public async validateWord(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.wordService.validateWord(this.userWords[this.currentUserWordIndex]).subscribe((status: number) => {
+        switch (status) {
+          case 200:
+            resolve(true)
+            break;
+          case 404:
+            this.messageService.add({severity:'error', summary: TextConstants.ERROR, detail: TextConstants.WORD_DOES_NOT_EXIST});
+            resolve(false)
+            break;
+          default:
+            this.messageService.add({severity:'error', summary: TextConstants.ERROR, detail: TextConstants.UNKNOWN_ERROR + ' : ' + status});
+            resolve(false)
+            break;
+        }
+      })
+    });
+  }
+  
+  public clearCurrentWord(): void {
+    this.userWords[this.currentUserWordIndex].clear();
   }
 
   public addLetter(key: string) {

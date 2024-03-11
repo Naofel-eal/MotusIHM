@@ -1,4 +1,5 @@
 import { LetterUtils } from "../utils/letter-utils";
+import { CorrectLetter } from "./letter/correct-letter";
 import { EmptyLetter } from "./letter/empty-letter";
 import { Letter } from "./letter/letter.model";
 
@@ -70,5 +71,12 @@ export class Word {
 
     public getCurrentLetterIndex(): number {
         return this.letters.findIndex(l => l.value === '');
+    }
+
+    public clear() {
+        for (let i = 0; i < this.letters.length; i++) {
+            if(!(this.letters[i] instanceof CorrectLetter))
+                this.letters[i] = new EmptyLetter();
+        }
     }
 }
