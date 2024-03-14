@@ -1,12 +1,19 @@
 # Motus Game
 
+<div align="center">
+    <img src="https://img.shields.io/github/contributors/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Contributors">
+    <img src="https://img.shields.io/github/forks/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Forks">
+    <img src="https://img.shields.io/github/stars/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Stars">
+    <img src="https://img.shields.io/github/issues/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Issues">
+</div>
+
 ## Overview
 
 Motus is an engaging word game where players aim to guess the correct word based on hints and feedback from their previous guesses. The game is built using modern web technologies and offers a seamless user experience.
 
 ## Technology Stack
 
-- **Framework**: [Angular](https://angular.io/)
+- **Framework**: [Angular 17](https://angular.io/)
 - **UI Components**: [PrimeNG](https://www.primefaces.org/primeng/)
 - **HTTP Client**: [HttpClientModule](https://angular.io/guide/http) from Angular
 - **Animations**: Angular's [BrowserAnimationsModule](https://angular.io/guide/animations)
@@ -42,7 +49,7 @@ The player continues to guess until they either guess the correct word or exhaus
 
 ---
 
-For more details, you can explore the game's [source code](https://github.com/Naofel-eal/motus).
+You can find the backend repository here: [MotusAPI](https://github.com/Naofel-eal/MotusAPI).
 
 ---
 
