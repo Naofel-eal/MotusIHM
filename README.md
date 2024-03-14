@@ -1,7 +1,7 @@
 # Motus Game
 
 <div align="center">
-    <img src="https://img.shields.io/github/contributors/naofel-eal/MotusIGM.svg?style=for-the-badge" alt="Contributors">
+    <img src="https://img.shields.io/github/contributors/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Contributors">
     <img src="https://img.shields.io/github/forks/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Forks">
     <img src="https://img.shields.io/github/stars/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Stars">
     <img src="https://img.shields.io/github/issues/naofel-eal/MotusIHM.svg?style=for-the-badge" alt="Issues">
