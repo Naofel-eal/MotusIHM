@@ -22,16 +22,12 @@ jobs:
         run: |
           git config --local user.email "${{ secrets.MY_GITHUB_MAIL }}"
           git config --local user.name "${{ secrets.MY_GITHUB_NAME }}"
-          
-      - name: Get the version from package.json
-        id: get_version
-        run: echo "::set-output name=VERSION::$(node -p "require('./package.json').version")"
 
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: v${{ github.ref_name }}
