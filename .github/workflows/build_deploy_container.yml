@@ -1,40 +1,39 @@
-name: Build and Deploy Docker Image
+name: Build and Deploy Docker Image on Release
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
+  release:
+    types: [created]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
       
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20'
 
-      - name: Extract project version
-        id: package_version
-        run: echo "::set-output name=VERSION::$(node -p "require('./package.json').version")"
-        
-      - name: Build the Docker image with version tag
-        run: docker build . --tag naofeleal/motus_ihm:${{ steps.package_version.outputs.VERSION }}
-      
-      - name: Tag the Docker image as latest
-        run: docker tag naofeleal/motus_ihm:${{ steps.package_version.outputs.VERSION }} naofeleal/motus_ihm:latest
-        
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           
-      - name: Push Docker image with version tag
-        run: docker push naofeleal/motus_ihm:${{ steps.package_version.outputs.VERSION }}
+      - name: Extract the release tag name
+        run: echo "RELEASE_TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      
+      - name: Build the Docker image with release tag
+        run: docker build . --tag naofeleal/motus_ihm:${{ env.RELEASE_TAG_NAME }}
+      
+      - name: Push Docker image with release tag
+        run: docker push naofeleal/motus_ihm:${{ env.RELEASE_TAG_NAME }}
+        
+      - name: Tag the Docker image as latest
+        run: docker tag naofeleal/motus_ihm:${{ env.RELEASE_TAG_NAME }} naofeleal/motus_ihm:latest
         
       - name: Push Docker image as latest
         run: docker push naofeleal/motus_ihm:latest
