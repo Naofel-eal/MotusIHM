@@ -66,3 +66,8 @@ p-speedDial {
     bottom: 2rem;
     left: 2rem;
 }
+
+.version {
+    font-size: large;
+    color: rgba(59, 130, 246, 1);
+}

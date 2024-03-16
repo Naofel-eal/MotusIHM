@@ -10,6 +10,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RulesComponent } from '../rules/rules.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { GameSettingsService } from '../../services/game-settings/game-settings.service';
+import pkg from '../../../../../package.json';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomeComponent {
   public title: string = TextConstants.TITLE.toUpperCase();
   public items: any[] = [];
   public ref: DynamicDialogRef | undefined;
+  public version: string = '';
 
   public constructor(
     public gameService: GameService,
@@ -29,6 +31,7 @@ export class HomeComponent {
     public messageService: MessageService,
     private gameSettingsService: GameSettingsService
 ) { 
+    this.version = pkg.version; 
     this.items = [
       {
           icon: 'pi pi-refresh',
