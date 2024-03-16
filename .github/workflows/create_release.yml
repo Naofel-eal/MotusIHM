@@ -1,0 +1,37 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "${{ secrets.MY_GITHUB_MAIL }}"
+          git config --local user.name "${{ secrets.MY_GITHUB_NAME }}"
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        with:
+          tag_name: $(node -p "require('./package.json').version")
+          release_name: MotusIHM v$(node -p "require('./package.json').version")
+          draft: false
+          prerelease: false
