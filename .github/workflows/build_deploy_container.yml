@@ -15,14 +15,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20' 
+          node-version: '20'
 
       - name: Extract project version
         id: package_version
         run: echo "::set-output name=VERSION::$(node -p "require('./package.json').version")"
         
-      - name: Build the Docker image
+      - name: Build the Docker image with version tag
         run: docker build . --tag naofeleal/motus_ihm:${{ steps.package_version.outputs.VERSION }}
+      
+      - name: Tag the Docker image as latest
+        run: docker tag naofeleal/motus_ihm:${{ steps.package_version.outputs.VERSION }} naofeleal/motus_ihm:latest
         
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -30,5 +33,8 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           
-      - name: Push Docker image
+      - name: Push Docker image with version tag
         run: docker push naofeleal/motus_ihm:${{ steps.package_version.outputs.VERSION }}
+        
+      - name: Push Docker image as latest
+        run: docker push naofeleal/motus_ihm:latest
