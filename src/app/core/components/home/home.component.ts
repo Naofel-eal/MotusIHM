@@ -105,6 +105,7 @@ export class HomeComponent {
           await this.gameService.handleWinOrLose();
         }
         else {
+          await asyncTimeout(1000);
           this.gameService.clearCurrentWord();
         }
   
