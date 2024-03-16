@@ -1,12 +1,12 @@
-name: Create Release
+name: Create Release on Tag
 
 on:
-  push:
-    branches:
-      - master
+  create:
+    tags:
+      - '*'
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -15,23 +15,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
+          node-version: '20'
 
       - name: Configure Git
         run: |
           git config --local user.email "${{ secrets.MY_GITHUB_MAIL }}"
           git config --local user.name "${{ secrets.MY_GITHUB_NAME }}"
           
-      - name: Create Release
+      - name: Get the version from package.json
+        id: get_version
+        run: echo "::set-output name=VERSION::$(node -p "require('./package.json').version")"
+
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Utilisez `GITHUB_TOKEN` pour une meilleure intégration
         with:
-          tag_name: $(node -p "require('./package.json').version")
-          release_name: MotusIHM v$(node -p "require('./package.json').version")
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
