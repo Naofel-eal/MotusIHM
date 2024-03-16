@@ -5,7 +5,7 @@
     [showTransformOptions]="'translateX(100%)'"
 ></p-toast>
 
-@if (this.gameService.isLoading) {
+@if (this.gameService.isLoading && this.gameService.solutionWords.length === 0) {
     <app-loading></app-loading>
 }
 @else {

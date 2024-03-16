@@ -5,7 +5,7 @@ import { Letter } from '../../models/letter/letter.model';
 import { MessageService } from 'primeng/api';
 import { APIWord } from '../../models/API-word';
 import { asyncTimeout } from '../../utils/async-timeout';
-import { Observable, forkJoin, map, tap, timer } from 'rxjs';
+import { Observable, catchError, delayWhen, forkJoin, map, retryWhen, tap, throwError, timer } from 'rxjs';
 import { CorrectLetter } from '../../models/letter/correct-letter';
 import { PendingLetter } from '../../models/letter/pending-letter';
 import { TextConstants } from '../../constants/text-constants';
@@ -59,8 +59,7 @@ export class GameService {
   public generateNewWords(): Observable<APIWord[]> {
     this.messageService.add({severity:'info', summary: TextConstants.STARTING, detail: TextConstants.FETCHING_WORD});
 
-    return forkJoin(
-    [
+    return forkJoin([
       this.wordService.generateNewWords(),
       timer(1000)
     ])
@@ -74,6 +73,19 @@ export class GameService {
         }
         this.isLoading = false;
       }),
+      catchError(error => {
+        this.messageService.add({severity: 'error', summary: TextConstants.ERROR, detail: TextConstants.ERROR_WHILE_LOADING_WORDS})
+        return throwError(error);
+      }),
+      retryWhen(errors => 
+        errors.pipe(
+          delayWhen(() => timer(5000)),
+          tap(() => {
+            this.messageService.add({severity:'info', summary: TextConstants.STARTING, detail: TextConstants.FETCHING_WORD});
+            console.log('Tentative de récupération de nouveaux mots...');
+          }),
+        )
+      )
     );
   }
 
