@@ -14,10 +14,12 @@ export class WordRepositoryAdapter implements IWordRepository {
     public constructor(@Inject(API_WORD_REPOSITORY_TOKEN) private apiWordRepository: IAPIWordRepository) { }
 
     public fetchSolutionWords(language: Language, numberOfWords: number): Promise<SolutionWord[]> {
-        return firstValueFrom(this.apiWordRepository.fetchSolutionWords(language.isoCode, numberOfWords)
-            .pipe(
-                map((response) => APIWordMapper.toSolutionWords(response.words))
-            ));
+        return firstValueFrom(
+            this.apiWordRepository.fetchSolutionWords(language.isoCode, numberOfWords)
+                .pipe(
+                    map((response) => APIWordMapper.toSolutionWords(response.words))
+                )
+        );
     }
 
     public async validateWord(language: Language, word: UserWord): Promise<boolean> {

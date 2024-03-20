@@ -8,4 +8,8 @@ export class SolutionWord {
     public get Length() {                                                                              
         return this.letters.length;
     }
+
+    public get Value() {
+        return this.letters.join('');
+    }
 }

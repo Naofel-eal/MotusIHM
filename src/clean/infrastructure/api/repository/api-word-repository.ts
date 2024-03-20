@@ -6,18 +6,18 @@ import { FetchWordAPIResponse } from "../model/FetchWordAPIResponse";
 
 @Injectable()
 export class APIWordRepository implements IAPIWordRepository {
-    private readonly baseUrl = 'localhost:8080/';
+    private readonly baseUrl = 'http://localhost:8080/';
     private readonly fetchWordRoute = this.baseUrl.concat('fetch');
     private readonly validateWordRoute = this.baseUrl.concat('validate');
 
     public constructor(private _httpClient: HttpClient) { }
 
     public fetchSolutionWords(isoCode: string, numberOfWords: number): Observable<FetchWordAPIResponse> {
-        let queryParams = new HttpParams();
-        queryParams.append('isocode', isoCode);
-        queryParams.append('validate', numberOfWords);
-
-        return this._httpClient.get<FetchWordAPIResponse>(this.fetchWordRoute, {params: queryParams});
+        const params = new HttpParams()
+            .set('isocode', isoCode)
+            .append('number', numberOfWords.toString());
+        
+        return this._httpClient.get<FetchWordAPIResponse>(this.fetchWordRoute, {params});
     }
 
     public validateWord(isoCode: string, word: string): Observable<number> {

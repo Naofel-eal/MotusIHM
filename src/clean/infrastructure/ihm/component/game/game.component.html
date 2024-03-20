@@ -1,0 +1,26 @@
+<div class="game">
+    @if (this.gameService.isLoading) {
+        <div class="loading">
+            <p-progressSpinner></p-progressSpinner>
+        </div>
+    }
+    @else {
+        <div class="grid">  
+            @for (userWord of gameService.wordGrid.words; track userWord; let userWordIndex = $index) {
+                <div class="row">
+                    @for (letter of userWord.letters; track letter; let letterIndex = $index) {
+                        <div 
+                            [ngClass]="[
+                                'cell', 
+                                letter.htmlClass, 
+                                userWordIndex === this.gameService.wordGrid.currentWordIndex && userWord.CurrentLetterIndex === letterIndex ? 'selected-cell' : ''
+                            ]"
+                        >
+                            <p>{{ letter.value }}</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>

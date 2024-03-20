@@ -3,8 +3,12 @@ import { IWordRepository } from "src/clean/core/application/repository/iword-rep
 import { ISolutionWordsCache } from "src/clean/core/application/service/cache/solutionWord/isolution-word-cache";
 import { IFetchWordUseCase } from "src/clean/core/application/usecase/fetchWord/ifetch-word-usecase";
 import { IValidateWordUseCase } from "src/clean/core/application/usecase/validateWord/ivalidate-word-usecase";
+import { ISettingsCacheService } from "../service/cache/settings/isettings-cache";
+import { IGameService } from "../service/game/igame-service";
 
 export const SOLUTION_WORD_CACHE_TOKEN = new InjectionToken<ISolutionWordsCache>('ISolutionWordsCache');
 export const WORD_REPOSITORY_TOKEN = new InjectionToken<IWordRepository>('IWordRepository');
 export const FETCH_WORD_USECASE_TOKEN = new InjectionToken<IFetchWordUseCase>('IFetchWordUseCase');
 export const VALIDATE_WORD_USECASE_TOKEN = new InjectionToken<IValidateWordUseCase>('IValidateWordUseCase');
+export const SETTINGS_CACHE_SERVICE_TOKEN = new InjectionToken<ISettingsCacheService>('ISettingsCacheService');
+export const GAME_SERVICE_TOKEN = new InjectionToken<IGameService>('IGameService');

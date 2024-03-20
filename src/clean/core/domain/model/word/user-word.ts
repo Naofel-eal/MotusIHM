@@ -32,6 +32,18 @@ export class UserWord {
         return -1;
     }
 
+    public get IsComplete(): boolean {
+        return this.letters.every(letter => !LetterUtils.isEmptyLetter(letter));
+    }
+
+    public get IsEmpty(): boolean {
+        return this.letters.every(letter => LetterUtils.isEmptyLetter(letter));
+    }
+
+    public get IsFirstLetterEmpty(): boolean {
+        return LetterUtils.isEmptyLetter(this.letters[0]);
+    }
+
     public getLetterByIndex(index: number): Letter {
         return this.letters[index];
     }
@@ -45,25 +57,13 @@ export class UserWord {
         }
     }
 
-    public isComplete(): boolean {
-        return this.letters.every(letter => !LetterUtils.isEmptyLetter(letter));
-    }
-
-    public isEmpty(): boolean {
-        return this.letters.every(letter => LetterUtils.isEmptyLetter(letter));
-    }
-
-    public isFirstLetterEmpty(): boolean {
-        return LetterUtils.isEmptyLetter(this.letters[0]);
-    }
-
     public addLetter(letter: Letter): void {
         const index: number = this.letters.findIndex(l => LetterUtils.isEmptyLetter(l));
         this.letters[index] = letter;
     }
 
     public removeLetter(): void {
-        if (!this.isEmpty() && !this.isFirstLetterEmpty()) {
+        if (!this.IsEmpty && !this.IsFirstLetterEmpty) {
             const index: number = this.LastLetterIndex;
             if (index !== -1) {
                 this.letters[index] = new EmptyLetter();

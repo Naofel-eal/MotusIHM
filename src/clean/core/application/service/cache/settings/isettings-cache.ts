@@ -1,8 +1,9 @@
-import { Settings } from "http2";
-import { Setting } from "src/clean/core/domain/model/setting/setting";
+import { Setting } from "src/clean/core/domain/model/setting/setting"
 
-export interface ISettingsCache {
-    addSetting(setting: Setting): void
+export interface ISettingsCacheService {
+    init(): void
     
-    addSettings(settings: Settings[]): void
+    resetSettings(): void
+
+    getSettingByKey(key: string): Setting<any> | undefined 
 }

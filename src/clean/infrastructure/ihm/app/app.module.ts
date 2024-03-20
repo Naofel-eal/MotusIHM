@@ -15,10 +15,12 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { APIWordRepository } from '../../api/repository/api-word-repository';
 import { CoreModule } from 'src/clean/core/application/module/core.module';
 import { InfrastructureModule } from '../module/infrastructure.module';
+import { GameComponent } from '../component/game/game.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,9 @@ import { InfrastructureModule } from '../module/infrastructure.module';
     InputTextModule,
     InputSwitchModule,
     CoreModule,
-    InfrastructureModule
+    InfrastructureModule,
+    GameComponent,
+    CommonModule
   ],
   providers: [
     {
