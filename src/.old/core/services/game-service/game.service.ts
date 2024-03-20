@@ -103,7 +103,7 @@ export class GameService {
 
   public async validateWord(): Promise<boolean> {
     return new Promise((resolve) => {
-      this.wordService.validateWord(this.userWords[this.currentUserWordIndex]).subscribe((status: number) => {
+      this.wordService.validateWord(this.userWords[this.CurrentUserWordIndex]).subscribe((status: number) => {
         switch (status) {
           case 200:
             resolve(true)
@@ -152,7 +152,7 @@ export class GameService {
   }
 
   public hasWon(): boolean {
-    return this.userWords[this.currentUserWordIndex].value === this.solutionWords[this.currentSolutionWordIndex];
+    return this.userWords[this.currentUserWordIndex].Value === this.solutionWords[this.currentSolutionWordIndex];
   }
 
   public isLastRow(): boolean {
