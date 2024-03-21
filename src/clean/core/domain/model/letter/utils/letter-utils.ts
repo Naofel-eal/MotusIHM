@@ -33,4 +33,9 @@ export class LetterUtils {
     public static toEmptyLetter(): EmptyLetter {
         return new EmptyLetter();
     }
+
+    public static isLetterValid(letter: string): boolean {
+        const regex: RegExp = /^[a-zA-Z]$/;
+        return regex.test(letter);
+    }
 }

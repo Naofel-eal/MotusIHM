@@ -28,4 +28,8 @@ export class SolutionWordsCache implements ISolutionWordsCache {
         this._solutionWordIndex += 1;
         return this.CurrentSolutionWord;
     }
+
+    public mustLoadNewWords(): boolean {
+        return this.solutionWords.length === 0 || this._solutionWordIndex === this.solutionWords.length - 1
+    }
 }

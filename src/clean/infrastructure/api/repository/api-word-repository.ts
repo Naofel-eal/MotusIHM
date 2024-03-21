@@ -1,4 +1,4 @@
-import { Observable, catchError, map, of } from "rxjs";
+import { Observable, catchError, delay, delayWhen, map, of, retryWhen, switchMap, timer} from "rxjs";
 import { IAPIWordRepository } from "./iapi-word-repository";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -17,13 +17,19 @@ export class APIWordRepository implements IAPIWordRepository {
             .set('isocode', isoCode)
             .append('number', numberOfWords.toString());
         
-        return this._httpClient.get<FetchWordAPIResponse>(this.fetchWordRoute, {params});
+        return this._httpClient.get<FetchWordAPIResponse>(this.fetchWordRoute, {params})
+            .pipe(
+                retryWhen((erreurs) => erreurs.pipe(
+                    delayWhen(() => timer(5000)),
+                    )
+                )
+            );
     }
 
     public validateWord(isoCode: string, word: string): Observable<number> {
-        let queryParams = new HttpParams();
-        queryParams.append('isocode', isoCode);
-        queryParams.append('word', word);
+        let queryParams = new HttpParams()
+            .set('isocode', isoCode)
+            .append('word', word);
 
         return this._httpClient.get<void>(
             this.validateWordRoute, 

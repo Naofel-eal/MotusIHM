@@ -140,7 +140,7 @@ export class HomeComponent {
         await asyncTimeout(this.gameSettingsService.letterAnimationDurationInMs.Value);
       }
     }
-}
+  }
 
   private isValidCharacter(key: string): boolean {
     const regex: RegExp = /^[a-zA-Z]$/;

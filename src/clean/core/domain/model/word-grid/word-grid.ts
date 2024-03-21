@@ -2,13 +2,19 @@ import { UserWord } from "../word/user-word";
 
 export class WordGrid {
     public words: UserWord[] = [];
-    public currentWordIndex: number = 0;
+    public CurrentWordIndex: number = 0;
 
     public constructor(numberOfWords: number, wordLength: number) {
-        this.words = new Array<UserWord>(numberOfWords).fill(new UserWord(wordLength))
+        for (let index = 0; index < numberOfWords; index++) {
+            this.words.push(new UserWord(wordLength));
+        }
+    }
+
+    public nextRow() {
+        this.CurrentWordIndex += 1;
     }
 
     public get CurrentUserWord() {
-        return this.words[this.currentWordIndex]
+        return this.words[this.CurrentWordIndex]
     }
 }

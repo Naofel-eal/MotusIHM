@@ -14,6 +14,7 @@ import { WordRepositoryAdapter } from "src/clean/infrastructure/api/adapter/word
 import { SettingsCacheService } from "../service/cache/settings/settings-cache";
 import { GameService } from "src/clean/core/application/service/game/game-service";
 import { InfrastructureModule } from "src/clean/infrastructure/ihm/module/infrastructure.module";
+import { MessageService } from "primeng/api";
 
 @NgModule({
     imports: [InfrastructureModule],
@@ -43,7 +44,8 @@ import { InfrastructureModule } from "src/clean/infrastructure/ihm/module/infras
         {
             provide: GAME_SERVICE_TOKEN,
             useClass: GameService
-        }
+        },
+        MessageService
     ]
 })
 export class CoreModule { }

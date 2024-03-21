@@ -8,4 +8,6 @@ export interface ISolutionWordsCache {
     nextWord(): SolutionWord
 
     CurrentSolutionWord: SolutionWord;
+
+    mustLoadNewWords(): boolean;
 }
