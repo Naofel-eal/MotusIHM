@@ -1,0 +1,9 @@
+<app-grid></app-grid>
+@if (gameService.canUserPlay) {
+    <p-speedDial 
+        [model]="spinItems" 
+        [radius]="150" 
+        direction="up-right" 
+        type="quarter-circle" 
+    ></p-speedDial>
+}
