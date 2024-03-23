@@ -17,8 +17,9 @@ export class SettingsCacheService implements ISettingsCacheService {
         this._settings.set(SettingsName.DELAY_BEFORE_NEW_GAME_IN_MS, new Setting(true, 2000));
         this._settings.set(SettingsName.LETTER_ANIMATION_DURATION_IN_MS, new Setting(true, 300));
         this._settings.set(SettingsName.NUMBER_OF_TRIES, new Setting(true, 7));
-        this._settings.set(SettingsName.NUMBER_OF_WORD_LOADED_AT_ONCE, new Setting(true, '10'));
+        this._settings.set(SettingsName.NUMBER_OF_WORD_LOADED_AT_ONCE, new Setting(true, 10));
         this._settings.set(SettingsName.GAME_LANGUAGE, new Setting(true, new Language("FR")));
+        this._settings.set(SettingsName.DELAY_BEFORE_ERASE_LETTERS, new Setting(true, 1000));
     }
 
     public resetAllSettings(): void {

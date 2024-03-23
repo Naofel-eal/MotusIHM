@@ -24,7 +24,7 @@ export class WordRepositoryAdapter implements IWordRepository {
 
     public async validateWord(language: Language, word: UserWord): Promise<boolean> {
         return firstValueFrom(
-            this.apiWordRepository.validateWord(language.isoCode, word.Value)
+            this.apiWordRepository.validateWord(language.isoCode, word.value)
             .pipe(
                 map((status) => status === 200)
             )

@@ -10,19 +10,19 @@ export class UserWord {
         this.letters = new Array<Letter>(size).fill(new EmptyLetter());
     }
 
-    public get Length(): number {
+    public get length(): number {
         return this.letters.length;
     }
 
-    public get Value(): string {
+    public get value(): string {
         return this.letters.map(letter => letter.value).join('');
     }
 
-    public get CurrentLetterIndex(): number {
+    public get currentLetterIndex(): number {
         return this.letters.findIndex(l => l.value === '');
     }
 
-    public get LastLetterIndex(): number {
+    public get lastLetterIndex(): number {
         let length = this.letters.length ;
         while(length--) {
             if (!LetterUtils.isEmptyLetter(this.letters[length]) && LetterUtils.isPendingLetter(this.letters[length])) {
@@ -32,15 +32,15 @@ export class UserWord {
         return -1;
     }
 
-    public get IsComplete(): boolean {
+    public get isComplete(): boolean {
         return this.letters.every(letter => !LetterUtils.isEmptyLetter(letter));
     }
 
-    public get IsEmpty(): boolean {
+    public get isEmpty(): boolean {
         return this.letters.every(letter => LetterUtils.isEmptyLetter(letter));
     }
 
-    public get IsFirstLetterEmpty(): boolean {
+    public get isFirstLetterEmpty(): boolean {
         return LetterUtils.isEmptyLetter(this.letters[0]);
     }
 
@@ -63,8 +63,8 @@ export class UserWord {
     }
 
     public removeLetter(): void {
-        if (!this.IsEmpty && !this.IsFirstLetterEmpty) {
-            const index: number = this.LastLetterIndex;
+        if (!this.isEmpty && !this.isFirstLetterEmpty) {
+            const index: number = this.lastLetterIndex;
             if (index !== -1) {
                 this.letters[index] = new EmptyLetter();
             }

@@ -5,11 +5,11 @@ export class SolutionWord {
         this.letters = word.split('');
     }
 
-    public get Length() {                                                                              
+    public get length() {                                                                              
         return this.letters.length;
     }
 
-    public get Value() {
+    public get value() {
         return this.letters.join('');
     }
 }

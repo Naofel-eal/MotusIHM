@@ -9,23 +9,23 @@ export class Setting<Type> {
         this._value = defaultValue;
     }
 
-    public get Editable(): boolean {
+    public get editable(): boolean {
         return this._editable;
     }
 
-    public set Editable(enabled: boolean) {
+    public set editable(enabled: boolean) {
         this._editable = enabled;
     }
 
-    public get Value(): Type {
+    public get value(): Type {
         return this._value;
     }
 
-    public set Value(value: Type) {
+    public set value(value: Type) {
         this._value = value;
     }
 
     public reset(): void {
-        this.Value = this._defaultValue
+        this.value = this._defaultValue
     }
 }

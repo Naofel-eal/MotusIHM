@@ -1,9 +1,21 @@
-<app-grid></app-grid>
-@if (gameService.canUserPlay) {
-    <p-speedDial 
-        [model]="spinItems" 
-        [radius]="150" 
-        direction="up-right" 
-        type="quarter-circle" 
-    ></p-speedDial>
+@if (this.isLoading) {
+    <div class="loading">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+}
+@else {
+    <div class="game">
+        <app-grid 
+            [wordGrid]="game.wordGrid"
+            [keyPressEvent]="keyPressEvent"
+            (hasWin)="handleWinOrLose($event)"
+        ></app-grid>
+
+        <p-speedDial 
+            [model]="spinItems" 
+            [radius]="150" 
+            direction="up-right" 
+            type="quarter-circle" 
+        ></p-speedDial>
+    </div>
 }
