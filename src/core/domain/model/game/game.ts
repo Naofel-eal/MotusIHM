@@ -1,3 +1,5 @@
+import { SettingsCode } from "src/core/application/enum/settings-code";
+import { Setting } from "../setting/setting";
 import { WordGrid } from "../word-grid/word-grid";
 import { SolutionWord } from "../word/solution-word";
 
@@ -24,6 +26,10 @@ export class Game {
 
     public addSolutioWords(solutionWords: SolutionWord[]): void {
         this.solutionWords = this.solutionWords.concat(solutionWords);
+    }
+
+    public handleSettingsChanges(settings: Setting<any>[]): void {
+        this.numberOfLines = settings.filter((setting) => setting.code === SettingsCode.NUMBER_OF_TRIES)[0].value;
     }
 
     public get mustLoadNewWords(): boolean {

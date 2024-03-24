@@ -12,26 +12,19 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { APIWordRepository } from '../../api/repository/api-word-repository';
-import { CoreModule } from 'src/core/application/module/core.module';
 import { InfrastructureModule } from '../module/infrastructure.module';
 import { CommonModule } from '@angular/common';
 import { GridComponent } from '../page/home/component/grid/grid.component';
 import { HomeComponent } from "../page/home/home.component";
 import { RulesComponent } from '../page/home/component/rules/rules.component';
-import { SettingsComponent } from '../page/home/component/settings/settings.component';
+import { SettingsComponent } from '../page/home/component/settings/settings/settings.component';
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
-    providers: [
-        {
-            provide: APIWordRepository,
-            useClass: APIWordRepository
-        },
-    ],
     bootstrap: [AppComponent],
+    providers: [],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -45,7 +38,6 @@ import { SettingsComponent } from '../page/home/component/settings/settings.comp
         SpeedDialModule,
         InputTextModule,
         InputSwitchModule,
-        CoreModule,
         InfrastructureModule,
         GridComponent,
         CommonModule,

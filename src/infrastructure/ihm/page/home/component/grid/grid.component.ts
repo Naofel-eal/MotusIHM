@@ -3,7 +3,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, Simp
 import { MessageService } from "primeng/api";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { Subject } from "rxjs";
-import { SettingsName } from "src/core/application/enum/settings-name";
+import { SettingsCode } from "src/core/application/enum/settings-code";
 import { SETTINGS_CACHE_SERVICE_TOKEN, VALIDATE_WORD_USECASE_TOKEN } from "src/core/application/module/core-injection-tokens";
 import { ISettingsCacheService } from "src/core/application/service/cache/settings/isettings-cache";
 import { asyncTimeout } from "src/core/application/shared/async-timeout";
@@ -71,7 +71,7 @@ export class GridComponent implements OnInit {
     this.wordGrid.canUserPlay = false;
     const isWordValid: boolean = await this.validateCurrentUserWord();
     if (isWordValid) {
-        const letterAnimationDurationInMs: Setting<number> = this._settingsService.getSettingByKey(SettingsName.LETTER_ANIMATION_DURATION_IN_MS)!;
+        const letterAnimationDurationInMs: Setting<number> = this._settingsService.getSettingByKey(SettingsCode.LETTER_ANIMATION_DURATION_IN_MS)!;
         await this.wordGrid.animateLetters(letterAnimationDurationInMs.value);
 
         if (this.wordGrid.isLastLine || this.wordGrid.isCurrentWordTheSolution) {
@@ -84,14 +84,14 @@ export class GridComponent implements OnInit {
     }
     else {
         this.messageService.add({ severity: 'error', summary: TextConstants.ERROR, detail: TextConstants.WORD_DOES_NOT_EXIST });
-        await asyncTimeout(this._settingsService.getSettingByKey(SettingsName.DELAY_BEFORE_ERASE_LETTERS)!.value);
+        await asyncTimeout(this._settingsService.getSettingByKey(SettingsCode.DELAY_BEFORE_ERASE_LETTERS)!.value);
         this.wordGrid.clearCurrentUserWord();
     }
     this.wordGrid.canUserPlay = true;
   }
 
   public async validateCurrentUserWord(): Promise<boolean> {
-    const languageSetting: Setting<Language> = this._settingsService.getSettingByKey(SettingsName.GAME_LANGUAGE)!;
+    const languageSetting: Setting<Language> = this._settingsService.getSettingByKey(SettingsCode.GAME_LANGUAGE)!;
 
     return await this._validateWordUseCase.execute(languageSetting.value, this.wordGrid.currentUserWord);
   }

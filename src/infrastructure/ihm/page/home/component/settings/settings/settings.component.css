@@ -1,0 +1,10 @@
+::ng-deep .p-scrollpanel-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+p-button {
+    align-self: center;
+}

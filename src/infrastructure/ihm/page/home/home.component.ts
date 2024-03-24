@@ -3,13 +3,13 @@ import { GridComponent } from './component/grid/grid.component';
 import { FETCH_WORD_USECASE_TOKEN, SETTINGS_CACHE_SERVICE_TOKEN } from 'src/core/application/module/core-injection-tokens';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SettingsComponent } from './component/settings/settings.component';
+import { SettingsComponent } from './component/settings/settings/settings.component';
 import { MessageService } from 'primeng/api';
 import { RulesComponent } from './component/rules/rules.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Game } from 'src/core/domain/model/game/game';
 import { ISettingsCacheService } from 'src/core/application/service/cache/settings/isettings-cache';
-import { SettingsName } from 'src/core/application/enum/settings-name';
+import { SettingsCode } from 'src/core/application/enum/settings-code';
 import { Setting } from 'src/core/domain/model/setting/setting';
 import { IFetchWordUseCase } from 'src/core/application/usecase/fetchWord/ifetch-word-usecase';
 import { Language } from 'src/core/domain/model/language/language';
@@ -29,7 +29,7 @@ import { asyncTimeout } from 'src/core/application/shared/async-timeout';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  public isLoading!: boolean;
+  public isLoading: boolean = true;
   public game: Game;
   public spinItems: any[] = [];
   public keyPressEvent: Subject<string>;
@@ -41,7 +41,7 @@ export class HomeComponent {
     private _dialogService: DialogService,
     private _messageService: MessageService
   ) {
-    const numberOfGridLinesSetting: Setting<number> =  this._settingsService.getSettingByKey(SettingsName.NUMBER_OF_TRIES)!;
+    const numberOfGridLinesSetting: Setting<number> =  this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_TRIES)!;
     this.keyPressEvent = new Subject<string>();
     this.game = new Game(numberOfGridLinesSetting.value);
 
@@ -61,10 +61,9 @@ export class HomeComponent {
   }
 
   public async fetchWordsAndAddThemToTheGame(shouldInitTheGrid: boolean) {
-    this.isLoading = true
-
-    const languageSetting: Setting<Language> = this._settingsService.getSettingByKey(SettingsName.GAME_LANGUAGE)!;
-    const numberOfWordsToLoadSetting: Setting<number> = this._settingsService.getSettingByKey(SettingsName.NUMBER_OF_WORD_LOADED_AT_ONCE)!;
+    this.isLoading = this.game.solutionWords.length === this.game.currentSolutionWordIndex || this.game.currentSolutionWordIndex === -1;
+    const languageSetting: Setting<Language> = this._settingsService.getSettingByKey(SettingsCode.GAME_LANGUAGE)!;
+    const numberOfWordsToLoadSetting: Setting<number> = this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_WORD_LOADED_AT_ONCE)!;
 
     this._fetchWordUseCase.execute(languageSetting.value, numberOfWordsToLoadSetting.value)
       .then(async (solutionWords) => {
@@ -85,7 +84,7 @@ export class HomeComponent {
     else
       this._messageService.add({ severity: 'error', summary: TextConstants.LOSE, detail: TextConstants.THE_WORD_WAS + ' : ' + this.game.currentSolutionWord.value});
     
-    await asyncTimeout(this._settingsService.getSettingByKey(SettingsName.DELAY_BEFORE_NEW_GAME_IN_MS)!.value);
+    await asyncTimeout(this._settingsService.getSettingByKey(SettingsCode.DELAY_BEFORE_NEW_GAME_IN_MS)!.value);
     await this.nextWord()
   }
 
@@ -155,6 +154,7 @@ export class HomeComponent {
       contentStyle: {"overflow": "auto"}
     });
     this._ref.onClose.subscribe(() => {
+      this.game.handleSettingsChanges(this._settingsService.allSettings)
       this._messageService.add({ severity: 'info', summary: 'Settings saved', detail: 'Settings have been saved ! '}); 
       this.game.canUserPlay = true;
     });

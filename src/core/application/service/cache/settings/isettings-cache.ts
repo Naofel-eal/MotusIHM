@@ -5,5 +5,7 @@ export interface ISettingsCacheService {
     
     resetAllSettings(): void
 
-    getSettingByKey(key: string): Setting<any> | undefined 
+    getSettingByKey(key: string): Setting<any> | undefined
+
+    get allSettings(): Setting<any>[]
 }

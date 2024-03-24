@@ -9,12 +9,9 @@ import { FetchWordUseCase } from "src/core/application/usecase/fetchWord/fetch-w
 import { ValidateWordUseCase } from "src/core/application/usecase/validateWord/validate-word-usecase";
 import { WordRepositoryAdapter } from "src/infrastructure/api/adapter/word-repository-adapter";
 import { SettingsCacheService } from "../service/cache/settings/settings-cache";
-import { InfrastructureModule } from "src/infrastructure/ihm/module/infrastructure.module";
 
 @NgModule({
-    imports: [
-        InfrastructureModule,
-    ],
+    imports: [],
     declarations: [],
     exports: [],
     providers: [

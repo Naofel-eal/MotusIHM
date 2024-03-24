@@ -1,0 +1,33 @@
+<div class="setting-factory">
+    <div class="option-block">
+        <label [htmlFor]="setting.code">{{ setting.displayedName }}</label>
+        <div class="setting">
+            <div class="editable">
+                @if (isSettingTypeOfNumber) {
+                    <p-inputNumber
+                        [(ngModel)]="setting.value"
+                        [useGrouping]="false"
+                        class="w-full"
+                    ></p-inputNumber>
+                    <p-slider 
+                        [(ngModel)]="setting.value" 
+                        [min]="setting.min!" 
+                        [max]="setting.max!"
+                    ></p-slider>
+                }
+                @else if (isSettingTypeOfLanguage) {
+                    <input 
+                        pInputText 
+                        type="text"
+                        [min]="setting.min!" 
+                        [max]="setting.max!" 
+                        oninput="validity.valid || (value=setting.defaultValue);" 
+                        [id]="setting.code" 
+                        [(ngModel)]="setting.value.isoCode" 
+                    />  
+                }
+            </div>
+            <p-button icon="pi pi-replay" (onClick)="onReset()"></p-button>
+        </div>
+    </div>
+</div>

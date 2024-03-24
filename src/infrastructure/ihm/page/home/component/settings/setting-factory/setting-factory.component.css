@@ -1,14 +1,19 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 2rem;
-}
-
 .option-block {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
+
+}
+
+.setting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editable {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -26,20 +31,14 @@ label {
     margin-bottom: 0.3rem;
 }
 
-p-button {
-    align-self: center;
-}
-
 input {
     width: 100%;
 }
 
-p-inputSwitch {
-    margin-right: 1rem;
+p-button {
+    margin: 1rem;
 }
 
-.grouped-inputs {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+p-slider {
+    margin-top: 1rem;
 }
