@@ -22,6 +22,7 @@ export class WordGrid {
 
     public nextRow() {
         this.currentUserWordIndex += 1;
+        this.restoreValidLetters();
     }
 
     public revealRandomUnfoundLetter(): void {

@@ -11,10 +11,8 @@ export const fadeInOut = trigger('fadeInOut', [
 ]);
 
 export const letterAnimation = trigger('letterAnimation', [
-    state('in', style({ transform: "rotateY(0deg)" })),
-    
     transition(':enter', [
-        style({ opacity: 0, transform: "rotateY(180deg)" }),
-        animate('300ms ease-in-out')
+        style({ opacity: 0, transform: "scale(50%) rotateY(180deg)" }),
+        animate('300ms ease-in-out', style({ opacity: 1, transform: "scale(1) rotateY(0deg)" }))
     ]),
 ]);
