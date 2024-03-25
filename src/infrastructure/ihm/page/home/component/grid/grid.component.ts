@@ -91,8 +91,6 @@ export class GridComponent implements OnInit {
   }
 
   public async validateCurrentUserWord(): Promise<boolean> {
-    const languageSetting: Setting<Language> = this._settingsService.getSettingByKey(SettingsCode.GAME_LANGUAGE)!;
-
-    return await this._validateWordUseCase.execute(languageSetting.value, this.wordGrid.currentUserWord);
+    return await this._validateWordUseCase.execute(this.wordGrid.gameLanguage, this.wordGrid.currentUserWord);
   }
 }

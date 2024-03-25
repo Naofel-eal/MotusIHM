@@ -2,12 +2,12 @@ import { Setting } from "src/core/domain/model/setting/setting";
 import { ISettingsCacheService } from "./isettings-cache";
 import { SettingsName } from "../../../enum/settings-name";
 import { Injectable } from "@angular/core";
-import { Language } from "src/core/domain/model/language/language";
 import { SettingsCode } from "src/core/application/enum/settings-code";
 
 @Injectable()
 export class SettingsCacheService implements ISettingsCacheService {
     private _settings!: Map<string, Setting<any>>
+    public selectedLanguagesIndex: number = 0;
 
     public constructor() {
         this._settings = new Map<string, Setting<any>>();
@@ -29,11 +29,7 @@ export class SettingsCacheService implements ISettingsCacheService {
         
         this._settings.set(SettingsCode.DELAY_BEFORE_ERASE_LETTERS, 
             new Setting(SettingsCode.DELAY_BEFORE_ERASE_LETTERS, SettingsName.DELAY_BEFORE_ERASE_LETTERS, true, 1000, 0, 5000));
-        
-        this._settings.set(SettingsCode.GAME_LANGUAGE, 
-            new Setting(SettingsCode.GAME_LANGUAGE, SettingsName.GAME_LANGUAGE, true, new Language("FR")));
     }
-    
 
     public resetAllSettings(): void {
         this._settings.forEach((setting) => setting.reset())
@@ -50,5 +46,4 @@ export class SettingsCacheService implements ISettingsCacheService {
     public get allSettings(): Setting<any>[] {
         return Array.from(this._settings.values())
     }
-
 }

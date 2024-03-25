@@ -6,6 +6,12 @@ p-speedDial {
     left: 2rem;
 }
 
+p-dropdown {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+}
+
 .loading {
     top: 0;
     left: 0;

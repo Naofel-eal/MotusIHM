@@ -2,7 +2,7 @@ import { Observable, catchError, delay, delayWhen, map, of, retryWhen, switchMap
 import { IAPIWordRepository } from "./iapi-word-repository";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FetchWordAPIResponse } from "../model/FetchWordAPIResponse";
+import { IFetchWordAPIResponse } from "../model/ifetch-word-api-response";
 
 @Injectable()
 export class APIWordRepository implements IAPIWordRepository {
@@ -12,12 +12,12 @@ export class APIWordRepository implements IAPIWordRepository {
 
     public constructor(private _httpClient: HttpClient) { }
 
-    public fetchSolutionWords(isoCode: string, numberOfWords: number): Observable<FetchWordAPIResponse> {
+    public fetchSolutionWords(isoCode: string, numberOfWords: number): Observable<IFetchWordAPIResponse> {
         const params = new HttpParams()
             .set('isocode', isoCode)
             .append('number', numberOfWords.toString());
         
-        return this._httpClient.get<FetchWordAPIResponse>(this.fetchWordRoute, {params})
+        return this._httpClient.get<IFetchWordAPIResponse>(this.fetchWordRoute, {params})
             .pipe(
                 retryWhen((erreurs) => erreurs.pipe(
                     delayWhen(() => timer(5000)),

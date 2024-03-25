@@ -1,6 +1,6 @@
 import { InjectionToken } from "@angular/core";
-import { IWordRepository } from "src/core/application/repository/iword-repository";
+import { IAPILanguageRepository } from "src/infrastructure/api/repository/iapi-language-repository";
 import { IAPIWordRepository } from "src/infrastructure/api/repository/iapi-word-repository";
 
-export const WORD_REPOSITORY_TOKEN = new InjectionToken<IWordRepository>('IWordRepository');
 export const API_WORD_REPOSITORY_TOKEN = new InjectionToken<IAPIWordRepository>('IAPIWordRepository');
+export const API_LANGUAGE_REPOSITORY_TOKEN = new InjectionToken<IAPILanguageRepository>('IAPILanguageRepository');

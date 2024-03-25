@@ -17,5 +17,38 @@
             direction="up-right" 
             type="quarter-circle" 
         ></p-speedDial>
+
+        <p-dropdown 
+            [options]="game.availableLanguages" 
+            [(ngModel)]="game.selectedLanguage" 
+            optionLabel="name" 
+            [showClear]="false" 
+            placeholder="Select a Country"
+            (onChange)="onLanguageChange($event)"
+        >
+            <ng-template pTemplate="selectedItem">
+                @if (game.selectedLanguage) {
+                    <div class="language-cell">
+                        <img 
+                            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                            alt="Flag placeholder"
+                            [class]="'flag flag-' + game.selectedLanguage.isoCode.toLowerCase()" 
+                            style="width: 1.5rem"
+                        />
+                        <div>{{ game.selectedLanguage.isoCode }}</div>
+                    </div>
+                }
+            </ng-template>
+            <ng-template let-language pTemplate="item">
+                <div class="language-cell">
+                    <img 
+                        src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                        alt="Flag placeholder"
+                        [class]="'flag flag-' + language.isoCode.toLowerCase()" 
+                        style="width: 1.5rem"/>
+                    <div>{{ language.isoCode }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
     </div>
 }

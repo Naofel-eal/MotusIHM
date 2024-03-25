@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from 'src/core/application/module/core.module';
 import { Language } from 'src/core/domain/model/language/language';
@@ -25,6 +25,7 @@ import { ButtonModule } from 'primeng/button';
 export class SettingFactoryComponent {
   @Input({required: true})
   public setting!: Setting<any>;
+  public selectedLanguage!: Language;
 
   public constructor() { }
 
@@ -32,24 +33,7 @@ export class SettingFactoryComponent {
     return typeof this.setting.defaultValue === "number";
   }
 
-  public get isSettingTypeOfLanguage() {
-    return this.setting.defaultValue instanceof Language;
-  }
-
-  public validateNumberInput(event: any): void {
-    console.log("oui")
-    const input = event.target;
-    if (!this._isNumber(input.value)) 
-      this.setting.reset();
-  }
-
   public onReset(): void {
     this.setting.reset();
-  }
-
-  private _isNumber(value?: string | number): boolean {
-    return ((value != null) &&
-      (value !== '') &&
-      !isNaN(Number(value.toString())));
   }
 }

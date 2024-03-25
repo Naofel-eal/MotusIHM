@@ -1,6 +1,6 @@
-import { Component, HostListener, Inject } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { GridComponent } from './component/grid/grid.component';
-import { FETCH_WORD_USECASE_TOKEN, SETTINGS_CACHE_SERVICE_TOKEN } from 'src/core/application/module/core-injection-tokens';
+import { FETCH_WORD_USECASE_TOKEN, GET_ALL_LANGUAGES_USECASE_TOKEN, SETTINGS_CACHE_SERVICE_TOKEN } from 'src/core/application/module/core-injection-tokens';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SettingsComponent } from './component/settings/settings/settings.component';
@@ -16,6 +16,9 @@ import { Language } from 'src/core/domain/model/language/language';
 import { Subject } from 'rxjs';
 import { TextConstants } from '../../constants/text-constants';
 import { asyncTimeout } from 'src/core/application/shared/async-timeout';
+import { IGetAllLanguagesUseCase } from 'src/core/application/usecase/getAllLanguages/iget-all-languages-usecase';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -23,30 +26,36 @@ import { asyncTimeout } from 'src/core/application/shared/async-timeout';
   imports: [
     GridComponent,
     SpeedDialModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DropdownModule,
+    FormsModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   public isLoading: boolean = true;
-  public game: Game;
+  public game!: Game;
   public spinItems: any[] = [];
-  public keyPressEvent: Subject<string>;
+  public keyPressEvent!: Subject<string>;
   private _ref: DynamicDialogRef | undefined;
 
   public constructor(
     @Inject(FETCH_WORD_USECASE_TOKEN) private _fetchWordUseCase: IFetchWordUseCase,
     @Inject(SETTINGS_CACHE_SERVICE_TOKEN) private _settingsService: ISettingsCacheService,
+    @Inject(GET_ALL_LANGUAGES_USECASE_TOKEN) private _getAllLanguagesUseVase: IGetAllLanguagesUseCase,
     private _dialogService: DialogService,
     private _messageService: MessageService
-  ) {
-    const numberOfGridLinesSetting: Setting<number> =  this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_TRIES)!;
-    this.keyPressEvent = new Subject<string>();
-    this.game = new Game(numberOfGridLinesSetting.value);
+  ) { }
 
-    this.fetchWordsAndAddThemToTheGame(true);
+  public async ngOnInit(): Promise<void> {
+    const numberOfGridLinesSetting: Setting<number> =  this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_TRIES)!;
+    this.game = new Game(numberOfGridLinesSetting.value);
+    this.keyPressEvent = new Subject<string>();
     this.initSpinItems();
+
+    await this.getLanguagesAndAddThemToTheGame();
+    await this.fetchWordsAndAddThemToTheGame(true);
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -60,22 +69,33 @@ export class HomeComponent {
     }
   }
 
-  public async fetchWordsAndAddThemToTheGame(shouldInitTheGrid: boolean) {
+  public async getAllLanguages(): Promise<Language[]> {
+    return await this._getAllLanguagesUseVase.execute();
+  }
+
+  public async getNewWords() {
     this.isLoading = this.game.solutionWords.length === this.game.currentSolutionWordIndex || this.game.currentSolutionWordIndex === -1;
-    const languageSetting: Setting<Language> = this._settingsService.getSettingByKey(SettingsCode.GAME_LANGUAGE)!;
+    const language: Language = this.game.selectedLanguage;
     const numberOfWordsToLoadSetting: Setting<number> = this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_WORD_LOADED_AT_ONCE)!;
 
-    this._fetchWordUseCase.execute(languageSetting.value, numberOfWordsToLoadSetting.value)
-      .then(async (solutionWords) => {
-        this.game.addSolutioWords(solutionWords);
-        
-        if(shouldInitTheGrid) {
-          this.game.newGrid()
-        }
+    return await this._fetchWordUseCase.execute(language, numberOfWordsToLoadSetting.value);
+  }
 
-        this.isLoading = false;
-        this.game.canUserPlay = true;
-    });
+  public async getLanguagesAndAddThemToTheGame() {
+    const languages: Language[] = await this.getAllLanguages();
+    this.game.initLanguage(languages);
+  }
+
+  public async fetchWordsAndAddThemToTheGame(shouldInitTheGrid: boolean) {   
+    const solutionWords = await this.getNewWords();
+    this.game.addSolutioWords(solutionWords);
+  
+    if(shouldInitTheGrid) {
+      this.game.newGrid()
+    }
+
+    this.isLoading = false;
+    this.game.canUserPlay = true;
   }
 
   public async handleWinOrLose(event: boolean) {
@@ -86,6 +106,10 @@ export class HomeComponent {
     
     await asyncTimeout(this._settingsService.getSettingByKey(SettingsCode.DELAY_BEFORE_NEW_GAME_IN_MS)!.value);
     await this.nextWord()
+  }
+
+  public onLanguageChange(event: any) {
+    this.game.wordGrid.gameLanguage = event.value;
   }
 
   public async nextWord() {

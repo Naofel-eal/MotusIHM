@@ -1,8 +1,8 @@
 import { Observable } from "rxjs";
-import { FetchWordAPIResponse } from "../model/FetchWordAPIResponse";
+import { IFetchWordAPIResponse } from "../model/ifetch-word-api-response";
 
 export interface IAPIWordRepository {
-    fetchSolutionWords(isoCode: string, numberOfWords: number): Observable<FetchWordAPIResponse>
+    fetchSolutionWords(isoCode: string, numberOfWords: number): Observable<IFetchWordAPIResponse>
 
     validateWord(isoCode: string, word: string): Observable<number>
 }

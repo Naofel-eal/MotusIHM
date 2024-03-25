@@ -2,16 +2,24 @@ import { SettingsCode } from "src/core/application/enum/settings-code";
 import { Setting } from "../setting/setting";
 import { WordGrid } from "../word-grid/word-grid";
 import { SolutionWord } from "../word/solution-word";
+import { Language } from "../language/language";
 
 export class Game {
     public wordGrid!: WordGrid;
     public solutionWords: SolutionWord[] = [];
     public currentSolutionWordIndex: number;
     public numberOfLines: number;
+    public availableLanguages: Language[] = [];
+    public selectedLanguage!: Language;
 
     public constructor(numberOfLines: number) {
         this.currentSolutionWordIndex = -1;
         this.numberOfLines = numberOfLines;
+    }
+
+    public initLanguage(availableLanguages: Language[]): void {
+        this.availableLanguages = availableLanguages;
+        this.selectedLanguage = availableLanguages.filter((language) => language.isoCode === "FR")[0];
     }
 
     public nextRound(): void {
@@ -21,7 +29,7 @@ export class Game {
 
     public newGrid() {
         this.currentSolutionWordIndex += 1;
-        this.wordGrid = new WordGrid(this.numberOfLines, this.solutionWords[this.currentSolutionWordIndex]);
+        this.wordGrid = new WordGrid(this.numberOfLines, this.solutionWords[this.currentSolutionWordIndex], this.selectedLanguage);
     }
 
     public addSolutioWords(solutionWords: SolutionWord[]): void {

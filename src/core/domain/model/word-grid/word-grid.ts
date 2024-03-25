@@ -5,14 +5,17 @@ import { Letter } from "../letter/letter";
 import { LetterUtils } from "../letter/utils/letter-utils";
 import { SolutionWord } from "../word/solution-word";
 import { UserWord } from "../word/user-word";
+import { Language } from "../language/language";
 
 export class WordGrid {
     public canUserPlay: boolean;
     public words: UserWord[] = [];
     public currentUserWordIndex: number = 0;
     public solutionWord!: SolutionWord;
+    public gameLanguage: Language;
 
-    public constructor(numberOfLines: number, solutionWord: SolutionWord) {
+    public constructor(numberOfLines: number, solutionWord: SolutionWord, language: Language) {
+        this.gameLanguage = language;
         this.solutionWord = solutionWord;
         for (let index = 0; index < numberOfLines; index++) {
             this.words.push(new UserWord(solutionWord.length));

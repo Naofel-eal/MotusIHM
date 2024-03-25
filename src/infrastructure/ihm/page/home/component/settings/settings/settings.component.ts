@@ -4,6 +4,7 @@ import { ISettingsCacheService } from 'src/core/application/service/cache/settin
 import { SettingFactoryComponent } from '../setting-factory/setting-factory.component';
 import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { Setting } from 'src/core/domain/model/setting/setting';
 
 @Component({
   standalone: true,
@@ -17,15 +18,14 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
+  public allSettings: Setting<any>[];
   public constructor(
     @Inject(SETTINGS_CACHE_SERVICE_TOKEN) private _settingsCacheService: ISettingsCacheService,
-  ) { }
+  ) {
+    this.allSettings = this._settingsCacheService.allSettings;
+  }
 
   public onReset(): void {
     this._settingsCacheService.resetAllSettings();
-  }
-
-  public get allSettings() {
-    return this._settingsCacheService.allSettings;
   }
 }
