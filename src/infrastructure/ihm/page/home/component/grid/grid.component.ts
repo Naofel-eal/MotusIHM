@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { Subject } from "rxjs";
@@ -8,7 +8,6 @@ import { SETTINGS_CACHE_SERVICE_TOKEN, VALIDATE_WORD_USECASE_TOKEN } from "src/c
 import { ISettingsCacheService } from "src/core/application/service/cache/settings/isettings-cache";
 import { asyncTimeout } from "src/core/application/shared/async-timeout";
 import { IValidateWordUseCase } from "src/core/application/usecase/validateWord/ivalidate-word-usecase";
-import { Language } from "src/core/domain/model/language/language";
 import { PendingLetter } from "src/core/domain/model/letter/pending-letter";
 import { LetterUtils } from "src/core/domain/model/letter/utils/letter-utils";
 import { Setting } from "src/core/domain/model/setting/setting";
@@ -27,12 +26,15 @@ import { TextConstants } from "src/infrastructure/ihm/constants/text-constants";
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css'
 })
-export class GridComponent implements OnInit {
+export class GridComponent implements OnInit, OnDestroy {
   @Input({ required: true}) 
   public wordGrid!: WordGrid;
   
   @Input({required: true})
   public keyPressEvent!: Subject<string>
+
+  @Input({required: true})
+  public revealLetterEvent!: Subject<void>
 
   @Output() 
   public hasWin = new EventEmitter<boolean>()
@@ -49,6 +51,18 @@ export class GridComponent implements OnInit {
     this.keyPressEvent.asObservable().subscribe(async (pressedKey) => {
       await this.onKeypress(pressedKey);
     })
+
+    this.revealLetterEvent.asObservable().subscribe(async () => {
+      this.wordGrid.revealRandomUnfoundLetter();
+      if (this.wordGrid.isLineCompleted) {
+        await this.handleCompletedWord();
+      }
+    });
+  }
+
+  public ngOnDestroy(): void {
+      this.keyPressEvent.unsubscribe();
+      this.revealLetterEvent.unsubscribe();
   }
 
   public async onKeypress(pressedKey: string) {

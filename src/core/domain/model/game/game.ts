@@ -23,13 +23,12 @@ export class Game {
     }
 
     public nextRound(): void {
-        this.currentSolutionWordIndex += 1;
         this.newGrid();
     }
 
     public newGrid() {
         this.currentSolutionWordIndex += 1;
-        this.wordGrid = new WordGrid(this.numberOfLines, this.solutionWords[this.currentSolutionWordIndex], this.selectedLanguage);
+        this.wordGrid = new WordGrid(this.numberOfLines, this.currentSolutionWord, this.selectedLanguage);
     }
 
     public addSolutioWords(solutionWords: SolutionWord[]): void {
@@ -38,6 +37,12 @@ export class Game {
 
     public handleSettingsChanges(settings: Setting<any>[]): void {
         this.numberOfLines = settings.filter((setting) => setting.code === SettingsCode.NUMBER_OF_TRIES)[0].value;
+    }
+
+    public handleLanguageChange(newWords: SolutionWord[]): void {
+        this.solutionWords = newWords;
+        this.currentSolutionWordIndex = -1;
+        this.newGrid()
     }
 
     public get mustLoadNewWords(): boolean {

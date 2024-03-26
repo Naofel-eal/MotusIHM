@@ -32,3 +32,12 @@ p-dropdown {
     justify-content: center;
     align-items: center;
 }
+
+.language-cell {
+    display: flex;
+    flex-direction: row;
+}
+
+.isocode {
+    margin-left: 1rem;
+}

@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
   public game!: Game;
   public spinItems: any[] = [];
   public keyPressEvent!: Subject<string>;
+  public revealLetterEvent!: Subject<void>;
   private _ref: DynamicDialogRef | undefined;
 
   public constructor(
@@ -52,6 +53,7 @@ export class HomeComponent implements OnInit {
     const numberOfGridLinesSetting: Setting<number> =  this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_TRIES)!;
     this.game = new Game(numberOfGridLinesSetting.value);
     this.keyPressEvent = new Subject<string>();
+    this.revealLetterEvent = new Subject<void>();
     this.initSpinItems();
 
     await this.getLanguagesAndAddThemToTheGame();
@@ -108,8 +110,10 @@ export class HomeComponent implements OnInit {
     await this.nextWord()
   }
 
-  public onLanguageChange(event: any) {
+  public async onLanguageChange(event: any) {
     this.game.wordGrid.gameLanguage = event.value;
+    const newWords = await this.getNewWords();
+    this.game.handleLanguageChange(newWords);
   }
 
   public async nextWord() {
@@ -137,7 +141,7 @@ export class HomeComponent implements OnInit {
           tooltipLabel: 'Tip'
         },
         command: () => {
-          this.game.wordGrid.revealRandomUnfoundLetter();
+          this.revealLetterEvent.next();
         }
       },
       {
