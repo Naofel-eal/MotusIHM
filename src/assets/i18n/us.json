@@ -1,0 +1,44 @@
+{
+    "MESSAGE_SERVICE": {
+      "WIN": "Victory!",
+      "LOSE": "Lost!",
+      "ERROR": "Error!",
+      "THE_WORD_WAS": "The word was: ",
+      "STARTING": "Starting",
+      "FETCHING_WORD": "Generating new words...",
+      "A_NEW_GAME_WILL_START": "A new game will start",
+      "WORD_DOES_NOT_EXIST": "The entered word does not exist.",
+      "UNKNOWN_ERROR": "An unknown error occurred.",
+      "ERROR_WHILE_LOADING_WORDS": "An error occurred while loading the words."
+    },
+  
+    "TOOLTIP": {
+      "GAME_RULES": "Game rules",
+      "NEW_GAME": "New game",
+      "MY_GITHUB": "My GitHub",
+      "GAME_SETTINGS": "Game settings",
+      "REVEAL_UNFOUND_LETTER": "Reveal an unfound letter"
+    },
+  
+    "GAME_SETTINGS_COMPONENT": {
+      "SETTINGS_HAVE_BEEN_SAVED": "Settings have been saved",
+      "SETTINGS_SAVED": "Settings saved",
+      "RESET_SETTINGS": "Restore settings",
+      "GAME_SETTINGS": "Game settings",
+      "LETTER_ANIMATION_DURATION_IN_MS": "Letter animation duration (ms)",
+      "NUMBER_OF_WORD_LOADED_AT_ONCE": "Number of words loaded at once",
+      "NUMBER_OF_TRIES": "Number of tries",
+      "DELAY_BEFORE_NEW_GAME_IN_MS": "Delay before a new game (ms)",
+      "DELAY_BEFORE_ERASE_LETTERS": "Delay before erasing letters (ms)"
+    },
+  
+    "GAME_RULES_COMPONENT": {
+      "GAME_RULES": "Game rules",
+      "THE_GOAL": "The goal of this game is to guess the generated word. Here is the set of colors used:",
+      "RED": "Red means the letter is incorrect",
+      "GREEN": "Green means the letter is correct",
+      "YELLOW": "Yellow means the letter is not in the right place",
+      "ENJOY": "Enjoy your game!"
+    }
+  }
+  

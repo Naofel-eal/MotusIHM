@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import pkg from '../../../../package.json';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,12 @@ import pkg from '../../../../package.json';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public readonly title: string = 'Motus';
-  public readonly version: string = pkg.version;
+  public title: string = 'Tusmo';
+  public version: string = pkg.version;
+
+  public constructor(translateService: TranslateService) {
+    translateService.addLangs(['fr', 'us']);
+    translateService.setDefaultLang('fr');
+    translateService.use('fr');
+  }
 }

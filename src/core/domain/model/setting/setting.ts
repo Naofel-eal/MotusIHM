@@ -5,13 +5,11 @@ export class Setting<Type> {
     public value: Type;
     public defaultValue: Type;
     public code: string;
-    public displayedName: string;
     public min?: number;
     public max?: number;
 
-    public constructor(code: string, displayedName: string, enabled: boolean, defaultValue: Type, min?: number, max?: number) {
+    public constructor(code: string, enabled: boolean, defaultValue: Type, min?: number, max?: number) {
         this.code = code;
-        this.displayedName = displayedName;
         this.editable = enabled;
         this.defaultValue = defaultValue;
         this.value = copy(defaultValue);

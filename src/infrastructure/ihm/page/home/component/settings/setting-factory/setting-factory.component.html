@@ -1,6 +1,6 @@
 <div class="setting-factory">
     <div class="option-block">
-        <label [htmlFor]="setting.code">{{ setting.displayedName }}</label>
+        <label [htmlFor]="setting.code">{{ settingLabel | translate }}</label>
         <div class="setting">
             <div class="editable">
                 @if (isSettingTypeOfNumber) {

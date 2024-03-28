@@ -1,6 +1,5 @@
 import { Setting } from "src/core/domain/model/setting/setting";
 import { ISettingsCacheService } from "./isettings-cache";
-import { SettingsName } from "../../../enum/settings-name";
 import { Injectable } from "@angular/core";
 import { SettingsCode } from "src/core/application/enum/settings-code";
 
@@ -16,19 +15,19 @@ export class SettingsCacheService implements ISettingsCacheService {
 
     public init(): void {
         this._settings.set(SettingsCode.DELAY_BEFORE_NEW_GAME_IN_MS, 
-            new Setting(SettingsCode.DELAY_BEFORE_NEW_GAME_IN_MS, SettingsName.DELAY_BEFORE_NEW_GAME_IN_MS, true, 2000, 0, 10000));
+            new Setting(SettingsCode.DELAY_BEFORE_NEW_GAME_IN_MS, true, 2000, 0, 10000));
         
         this._settings.set(SettingsCode.LETTER_ANIMATION_DURATION_IN_MS, 
-            new Setting(SettingsCode.LETTER_ANIMATION_DURATION_IN_MS, SettingsName.LETTER_ANIMATION_DURATION_IN_MS, true, 300, 0, 1000));
+            new Setting(SettingsCode.LETTER_ANIMATION_DURATION_IN_MS, true, 300, 0, 1000));
         
         this._settings.set(SettingsCode.NUMBER_OF_TRIES, 
-            new Setting(SettingsCode.NUMBER_OF_TRIES, SettingsName.NUMBER_OF_TRIES, true, 7, 1, 8));
+            new Setting(SettingsCode.NUMBER_OF_TRIES, true, 7, 1, 8));
         
         this._settings.set(SettingsCode.NUMBER_OF_WORD_LOADED_AT_ONCE, 
-            new Setting(SettingsCode.NUMBER_OF_WORD_LOADED_AT_ONCE, SettingsName.NUMBER_OF_WORD_LOADED_AT_ONCE, true, 10, 1, 20));
+            new Setting(SettingsCode.NUMBER_OF_WORD_LOADED_AT_ONCE, true, 10, 1, 20));
         
         this._settings.set(SettingsCode.DELAY_BEFORE_ERASE_LETTERS, 
-            new Setting(SettingsCode.DELAY_BEFORE_ERASE_LETTERS, SettingsName.DELAY_BEFORE_ERASE_LETTERS, true, 1000, 0, 5000));
+            new Setting(SettingsCode.DELAY_BEFORE_ERASE_LETTERS, true, 1000, 0, 5000));
     }
 
     public resetAllSettings(): void {

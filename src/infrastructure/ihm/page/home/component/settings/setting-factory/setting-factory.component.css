@@ -1,8 +1,8 @@
 .option-block {
     display: flex;
     flex-direction: column;
-    margin: 1rem 0;
-
+    margin: 0 0;
+    margin-bottom: 1rem;
 }
 
 .setting {

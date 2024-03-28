@@ -1,0 +1,43 @@
+{
+  "MESSAGE_SERVICE": {
+    "WIN": "Victoire !",
+    "LOSE": "Perdu !",
+    "ERROR": "Erreur !",
+    "THE_WORD_WAS": "Le mot était : ",
+    "STARTING": "Lancement",
+    "FETCHING_WORD": "Génération de nouveaux mots...",
+    "A_NEW_GAME_WILL_START": "Une nouvelle partie va commencer",
+    "WORD_DOES_NOT_EXIST": "Le mot saisi n'existe pas.",
+    "UNKNOWN_ERROR": "Une erreur inconnue est survenue.",
+    "ERROR_WHILE_LOADING_WORDS": "Une erreur est survenue pendant le chargement des mots."
+  },
+
+  "TOOLTIP": {
+    "GAME_RULES": "Règles du jeu",
+    "NEW_GAME": "Nouvelle partie",
+    "MY_GITHUB": "Mon GitHub",
+    "GAME_SETTINGS": "Paramètres du jeu",
+    "REVEAL_UNFOUND_LETTER": "Révéler une lettre"
+  },
+
+  "GAME_SETTINGS_COMPONENT": {
+    "SETTINGS_HAVE_BEEN_SAVED": "Les paramètres ont été enregistrés",
+    "SETTINGS_SAVED": "Paramètres enregistrés",
+    "RESET_SETTINGS": "Restaurer les paramètres",
+    "GAME_SETTINGS": "Paramètres du jeu",
+    "LETTER_ANIMATION_DURATION_IN_MS": "Durée de l'animation des lettres (ms)",
+    "NUMBER_OF_WORD_LOADED_AT_ONCE": "Nombre de mots chargés à la fois",
+    "NUMBER_OF_TRIES": "Nombre d'essais",
+    "DELAY_BEFORE_NEW_GAME_IN_MS": "Délai avant une nouvelle partie (ms)",
+    "DELAY_BEFORE_ERASE_LETTERS": "Délai avant d'effacer les lettres (ms)"
+  },
+
+  "GAME_RULES_COMPONENT": {
+    "GAME_RULES": "Règles du jeu",
+    "THE_GOAL": "Le but de ce jeu est de deviner le mot généré. Voici l'ensemble de couleurs utilisé :",
+    "RED": "Le rouge signifie que la lettre est incorrecte",
+    "GREEN": "Le vert signifie que la lettre est correcte",
+    "YELLOW": "Le jaune signifie que la lettre n'est pas à la bonne place",
+    "ENJOY": "Profitez de votre jeu !"
+  }
+}

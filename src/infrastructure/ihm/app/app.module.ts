@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule  } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -18,6 +18,13 @@ import { GridComponent } from '../page/home/component/grid/grid.component';
 import { HomeComponent } from "../page/home/home.component";
 import { RulesComponent } from '../page/home/component/rules/rules.component';
 import { SettingsComponent } from '../page/home/component/settings/settings/settings.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CustomTranslationLoader } from '../translation/cutsom-translation-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
+}
 
 @NgModule({
     declarations: [
@@ -43,7 +50,14 @@ import { SettingsComponent } from '../page/home/component/settings/settings/sett
         CommonModule,
         HomeComponent,
         RulesComponent,
-        SettingsComponent
+        SettingsComponent,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                  useClass: CustomTranslationLoader,
+                  deps: [HttpClient]
+              }
+        })
     ]
 })
 export class AppModule { }

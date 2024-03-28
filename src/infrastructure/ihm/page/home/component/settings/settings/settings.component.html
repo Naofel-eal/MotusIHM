@@ -4,7 +4,7 @@
             <app-setting-factory [setting]="setting"></app-setting-factory>
         }
         <p-button 
-            label="Reset settings" 
+            [label]="resetSettingsLabel" 
             icon="pi pi-refresh" 
             (onClick)="onReset()"
         ></p-button>

@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
 import { MessageService } from "primeng/api";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { Subject } from "rxjs";
@@ -13,7 +14,6 @@ import { LetterUtils } from "src/core/domain/model/letter/utils/letter-utils";
 import { Setting } from "src/core/domain/model/setting/setting";
 import { WordGrid } from "src/core/domain/model/word-grid/word-grid";
 import { fadeInOut, letterAnimation } from "src/infrastructure/ihm/animations/animations";
-import { TextConstants } from "src/infrastructure/ihm/constants/text-constants";
 
 @Component({
   selector: 'app-grid',
@@ -44,7 +44,8 @@ export class GridComponent implements OnInit, OnDestroy {
   public constructor(
     @Inject(VALIDATE_WORD_USECASE_TOKEN) private _validateWordUseCase: IValidateWordUseCase,
     @Inject(SETTINGS_CACHE_SERVICE_TOKEN) private _settingsService: ISettingsCacheService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    private translateService: TranslateService
   ) { }
 
   public ngOnInit(): void {
@@ -97,7 +98,7 @@ export class GridComponent implements OnInit, OnDestroy {
         }
     }
     else {
-        this.messageService.add({ severity: 'error', summary: TextConstants.ERROR, detail: TextConstants.WORD_DOES_NOT_EXIST });
+        this.messageService.add({ severity: 'error', summary: this.translateService.instant('MESSAGE_SERVICE.ERROR'), detail: this.translateService.instant('MESSAGE_SERVICE.WORD_DOES_NOT_EXIST')});
         await asyncTimeout(this._settingsService.getSettingByKey(SettingsCode.DELAY_BEFORE_ERASE_LETTERS)!.value);
         this.wordGrid.clearCurrentUserWord();
     }
