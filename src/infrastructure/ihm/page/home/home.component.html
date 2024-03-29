@@ -19,15 +19,25 @@
             type="quarter-circle" 
         ></p-speedDial>
 
-        <p-dropdown 
-            id="languageDropdown"
+        <p-dropdown
             [options]="game.availableLanguages" 
             [(ngModel)]="game.selectedLanguage" 
-            optionLabel="fullName" 
-            [showClear]="false" 
+            optionLabel="isoCode" 
             placeholder="Select a language"
             (onChange)="onLanguageChange($event)"
         >
+            <ng-template pTemplate="selectedItem" #languageDropDown>
+                @if (game.selectedLanguage) {
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ getFlafFromLanguageIsoCode(game.selectedLanguage.isoCode) }} {{ game.selectedLanguage.isoCode }}</div>
+                    </div>
+                }
+            </ng-template>
+            <ng-template let-language pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ getFlafFromLanguageIsoCode(language.isoCode) }} {{ language.isoCode }}</div>
+                </div>
+            </ng-template>
         </p-dropdown>
     </div>
 }

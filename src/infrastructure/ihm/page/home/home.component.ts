@@ -13,7 +13,7 @@ import { SettingsCode } from 'src/core/application/enum/settings-code';
 import { Setting } from 'src/core/domain/model/setting/setting';
 import { IFetchWordUseCase } from 'src/core/application/usecase/fetchWord/ifetch-word-usecase';
 import { Language } from 'src/core/domain/model/language/language';
-import { Observable, Subject, forkJoin } from 'rxjs';
+import { Subject } from 'rxjs';
 import { asyncTimeout } from 'src/core/application/shared/async-timeout';
 import { IGetAllLanguagesUseCase } from 'src/core/application/usecase/getAllLanguages/iget-all-languages-usecase';
 import { DropdownModule } from 'primeng/dropdown';
@@ -88,7 +88,6 @@ export class HomeComponent implements OnInit {
       this.texts[key] = this.translateService.instant(key);
     });
   }
-  
 
   @HostListener('window:keyup', ['$event'])
   public async keyEvent(event: KeyboardEvent) {
@@ -217,5 +216,15 @@ export class HomeComponent implements OnInit {
     this._ref.onClose.subscribe(() => {
       this.game.canUserPlay = true;  
     });
+  }
+
+  public getFlafFromLanguageIsoCode(languageIsoCode: string): string {
+      return languageIsoCode.toUpperCase() === 'EN' ? this._isoCodeToEmojiFlag('GB') : this._isoCodeToEmojiFlag(languageIsoCode)
+  }
+
+  private _isoCodeToEmojiFlag(isoCode: string): string {
+    const firstChar = isoCode.charCodeAt(0) - 65 + 0x1F1E6;
+    const secondChar = isoCode.charCodeAt(1) - 65 + 0x1F1E6;
+    return String.fromCodePoint(firstChar, secondChar);
   }
 }
