@@ -43,6 +43,9 @@ export class HomeComponent implements OnInit {
   private _ref: DynamicDialogRef | undefined;
   public texts: any = {};
 
+  @ViewChild('languageDropDown', {read: ElementRef, static: false})
+  public languageDropDown!: any;
+
   public constructor(
     @Inject(FETCH_WORD_USECASE_TOKEN) private _fetchWordUseCase: IFetchWordUseCase,
     @Inject(SETTINGS_CACHE_SERVICE_TOKEN) private _settingsService: ISettingsCacheService,
@@ -51,6 +54,11 @@ export class HomeComponent implements OnInit {
     private _messageService: MessageService,
     private translateService: TranslateService
   ) { }
+
+  @ViewChild('languageDropDown') set content(content: any) {
+    if(content)
+      this.languageDropDown = content.focusInputViewChild.nativeElement;
+ }
 
   public async ngOnInit(): Promise<void> {
     const numberOfGridLinesSetting: Setting<number> =  this._settingsService.getSettingByKey(SettingsCode.NUMBER_OF_TRIES)!;
@@ -147,6 +155,8 @@ export class HomeComponent implements OnInit {
     this.translateService.use(event.value.isoCode.toLowerCase());
     this.loadTranslations();
     this.initSpinItems();
+
+    this.removeDropDownFocus();
   }
 
   public async nextWord() {
@@ -219,12 +229,18 @@ export class HomeComponent implements OnInit {
   }
 
   public getFlafFromLanguageIsoCode(languageIsoCode: string): string {
-      return languageIsoCode.toUpperCase() === 'EN' ? this._isoCodeToEmojiFlag('GB') : this._isoCodeToEmojiFlag(languageIsoCode)
+      return languageIsoCode.toUpperCase() === 'EN' ? this.isoCodeToEmojiFlag('GB') : this.isoCodeToEmojiFlag(languageIsoCode)
   }
 
-  private _isoCodeToEmojiFlag(isoCode: string): string {
+  private isoCodeToEmojiFlag(isoCode: string): string {
     const firstChar = isoCode.charCodeAt(0) - 65 + 0x1F1E6;
     const secondChar = isoCode.charCodeAt(1) - 65 + 0x1F1E6;
     return String.fromCodePoint(firstChar, secondChar);
+  }
+
+  private removeDropDownFocus(): any {
+    if (this.languageDropDown && typeof this.languageDropDown.blur === 'function') {
+      this.languageDropDown.blur();
+    }
   }
 }

@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public title: string = 'Tusmo';
+  public title: string = 'Tusmo'.toUpperCase();
   public version: string = pkg.version;
 
   public constructor(translateService: TranslateService) {
