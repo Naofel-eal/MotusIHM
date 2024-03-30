@@ -99,7 +99,10 @@ export class HomeComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   public async keyEvent(event: KeyboardEvent) {
-    if (!this.game.canUserPlay) {
+    if (this.isLoading) {
+      return
+    }
+    else if (!this.game.canUserPlay) {
       event.stopPropagation();
     }
     else {
